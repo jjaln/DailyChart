@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.jjaln.dailychart">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.SE">
+        <activity android:name=".contents.community.CommunitySearchActivity" />
+        <activity android:name=".contents.community.CommunityWriteActivity" />
+        <activity android:name=".contents.course.CoursesActivity" />
+        <activity android:name=".contents.community.CommunityActivity" />
+        <activity android:name=".contents.dashboard.UserDashBoardActivity" />
+        <activity android:name=".contents.login.LoginActivity" />
+        <activity android:name=".contents.community.CommunityContentsActivity" />
+        <activity android:name=".CoinInfo" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.SE">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
