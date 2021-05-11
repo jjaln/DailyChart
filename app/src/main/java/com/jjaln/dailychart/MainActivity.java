@@ -22,10 +22,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.jjaln.dailychart.Recycler.coinList.Coin_List_Data;
-import com.jjaln.dailychart.Recycler.coinList.Coin_List_RecyclerAdapter;
-import com.jjaln.dailychart.Recycler.exchange.Exchange_List_Data;
-import com.jjaln.dailychart.Recycler.exchange.Exchange_List_RecyclerAdapter;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.jjaln.dailychart.contents.login.LoginActivity;
+import com.jjaln.dailychart.feature.Coin;
+import com.jjaln.dailychart.adapter.CoinListAdapter;
+import com.jjaln.dailychart.feature.Exchange;
+import com.jjaln.dailychart.adapter.ExchangeAdapter;
 import com.jjaln.dailychart.contents.dashboard.UserDashBoardActivity;
 import com.jjaln.dailychart.wallet.Api_Client;
 import com.google.android.material.navigation.NavigationView;
@@ -44,16 +48,17 @@ public class MainActivity extends AppCompatActivity {
     private Context mContext = MainActivity.this;
 
     private Toolbar toolbarNomad;
+    private GoogleSignInClient googleSignInClient;
     private ImageView ivMenu;
     private DrawerLayout drawer;
     private NavigationView nv;
-    private Coin_List_RecyclerAdapter coinAdapter;
+    private CoinListAdapter coinAdapter;
     private LinearLayoutManager coinManager;
     private TextView tv_currentAsset;
     private RecyclerView rvCoin, rvExchange;
     private SharedPreferences pref;
     private String token;
-    private ArrayList<Coin_List_Data> CoinData;
+    private ArrayList<Coin> CoinData;
     private FirebaseUser user;
     private RoundedImageView rivUser;
     private static final String TAG = "MainActivity";
@@ -63,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d("/////////","oncreate start");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        NetworkThread thread = new NetworkThread();
+        thread.start();
 
         toolbarNomad = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbarNomad);
@@ -84,17 +92,21 @@ public class MainActivity extends AppCompatActivity {
 
         //Exchage List
         rvExchange = findViewById(R.id.rv_exchangeList);
-        ArrayList<Exchange_List_Data> ExchangeData = new ArrayList<>();
+        ArrayList<Exchange> ExchangeData = new ArrayList<>();
 
-        ExchangeData.add(new Exchange_List_Data(R.mipmap.bithumb, "com.btckorea.bithumb", "Bithumb"));
-        ExchangeData.add(new Exchange_List_Data(R.mipmap.upbit, "com.dunamu.exchange", "Upbit"));
+        ExchangeData.add(new Exchange(R.mipmap.bithumb, "com.btckorea.bithumb", "Bithumb"));
+        ExchangeData.add(new Exchange(R.mipmap.upbit, "com.dunamu.exchange", "Upbit"));
 
         LinearLayoutManager exchange_manager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         rvExchange.setLayoutManager(exchange_manager);
-        rvExchange.setAdapter(new Exchange_List_RecyclerAdapter(ExchangeData));
+        rvExchange.setAdapter(new ExchangeAdapter(ExchangeData));
 
-        coinManager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
         rvCoin = findViewById(R.id.rv_CoinList);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
 
         Log.d("/////////","oncreate End");
     }
@@ -103,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
 
         super.onResume();
+
         Log.d("/////////","OnResume Start");
         pref = getSharedPreferences("pref", MODE_PRIVATE);
         token = pref.getString("token", "");
@@ -115,8 +128,11 @@ public class MainActivity extends AppCompatActivity {
             nv.getMenu().findItem(R.id.dashboard).setVisible(true);
         }
         appbarRight();
-        NetworkThread thread = new NetworkThread();
-        thread.start();
+
+        coinManager = new LinearLayoutManager(mContext,RecyclerView.VERTICAL,false);
+        rvCoin.setLayoutManager(coinManager);
+        rvCoin.setAdapter(coinAdapter);
+
         Log.d("/////////","OnResume End");
     }
 
@@ -154,11 +170,12 @@ public class MainActivity extends AppCompatActivity {
                             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             v.getContext().startActivity(intent);
                         } else {
-                            FirebaseAuth.getInstance().signOut();
-                            Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
                             SharedPreferences.Editor editor = pref.edit();
-                            editor.putString("token", "");
+                            editor.putString("token","");
                             editor.commit();
+                            FirebaseAuth.getInstance().signOut();
+                            googleSignInClient.signOut();
+                            Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(v.getContext(), MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             v.getContext().startActivity(intent);
@@ -227,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
                         (Float.parseFloat(xcoin_last_ada) * Float.parseFloat(total_ada)) +
                         (Float.parseFloat(xcoin_last_dot) * Float.parseFloat(total_dot));
                 String Asset = "Bithumb : " + balance;
-
+                tv_currentAsset.setText(Asset);
                 String[] coin_list = {"BTC", "ETH", "XRP", "ADA", "DOT"};
                 ArrayList<String> coins = new ArrayList<>(Arrays.asList(coin_list));
                 int[] coin_img = {R.mipmap.btc, R.mipmap.eth, R.mipmap.xrp, R.mipmap.ada, R.mipmap.dot};
@@ -240,16 +257,14 @@ public class MainActivity extends AppCompatActivity {
                     String closing_price = dt_list.getString("closing_price");
                     String fluctate_24H = dt_list.getString("fluctate_24H");
                     String fluctate_rate_24H = dt_list.getString("fluctate_rate_24H");
-                    CoinData.add(new Coin_List_Data(c_img, coin, closing_price, fluctate_rate_24H, fluctate_24H));
-                    coinAdapter = new Coin_List_RecyclerAdapter(CoinData,mContext);
+                    CoinData.add(new Coin(c_img, coin, closing_price, fluctate_rate_24H, fluctate_24H));
+                    coinAdapter = new CoinListAdapter(CoinData,mContext);
                     Log.d("//////////", closing_price + " / " + fluctate_24H);
                 }
-                rvCoin.setLayoutManager(coinManager);
-                rvCoin.setAdapter(coinAdapter);
 
-                tv_currentAsset.setText(Asset);
-                Log.d("/////////","Thread Start");
+                Log.d("/////////","Thread End");
             } catch (Exception e) {
+
                 Log.d("/////////", "DataGetError");
             }
             try {

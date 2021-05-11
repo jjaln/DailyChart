@@ -1,5 +1,6 @@
 package com.jjaln.dailychart.contents.login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -47,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private RoundedImageView rivUser;
     private SignInButton signInButton;
+    public Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         ivBack = findViewById(R.id.iv_back);
-
+        mContext = this;
         tvToolbarTitle = findViewById(R.id.tv_toolbar_title);
         tvToolbarTitle.setText("Login");
 
@@ -101,7 +103,11 @@ public class LoginActivity extends AppCompatActivity {
             firebaseAuthWithGoogle(task);
         }
     }
-
+    public void SignOut()
+    {
+        FirebaseAuth.getInstance().signOut();
+        mGoogleSignInClient.signOut();
+    }
     private void firebaseAuthWithGoogle(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount acct = completedTask.getResult(ApiException.class);

@@ -1,4 +1,4 @@
-package com.jjaln.dailychart;
+package com.jjaln.dailychart.contents;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,8 +13,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.jjaln.dailychart.Recycler.News.News_List_Data;
-import com.jjaln.dailychart.Recycler.News.News_List_RecyclerAdapter;
+import com.jjaln.dailychart.R;
+import com.jjaln.dailychart.feature.News;
+import com.jjaln.dailychart.adapter.NewsListAdapter;
 import com.jjaln.dailychart.wallet.Api_Client;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,6 +26,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,9 +38,9 @@ import java.util.Map;
 
 public class CoinInfo extends AppCompatActivity {
     private RecyclerView mRecyclerView;
-    private News_List_RecyclerAdapter mNewsAdapter;
+    private NewsListAdapter mNewsAdapter;
     private LinearLayoutManager layoutManager;
-    private ArrayList<News_List_Data> newsListData;
+    private ArrayList<News> newsListData;
     private ImageView ivBack;
     private Context context;
     private FirebaseFirestore database;
@@ -57,7 +59,7 @@ public class CoinInfo extends AppCompatActivity {
         setContentView(R.layout.activity_coin_info);
 
         graph = (GraphView) findViewById(R.id.chart);
-        context = getBaseContext();
+        context = this;
         toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
         ivBack = findViewById(R.id.iv_back);
@@ -68,8 +70,7 @@ public class CoinInfo extends AppCompatActivity {
         Intent intent = getIntent();
         coin_name = intent.getExtras().getString("coin_name");
         coin_img = intent.getExtras().getInt("coin_img");
-
-        ImageView imageView = findViewById(R.id.riv_coin);
+        RoundedImageView imageView = (RoundedImageView)findViewById(R.id.riv_coin);
         TextView textView = findViewById(R.id.tv_coininfo);
 
         layoutManager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
@@ -94,9 +95,9 @@ public class CoinInfo extends AppCompatActivity {
                     String title = data.get("title").toString();
                     String url = data.get("link").toString();
                     String desc = data.get("desc").toString();
-                    News_List_Data cData = new News_List_Data(title,desc,url);
+                    News cData = new News(title,desc,url);
                     newsListData.add(cData);
-                    mNewsAdapter = new News_List_RecyclerAdapter(newsListData,context);
+                    mNewsAdapter = new NewsListAdapter(newsListData,context);
                 }
                 mRecyclerView.setAdapter(mNewsAdapter);
                 mRecyclerView.setLayoutManager(layoutManager);

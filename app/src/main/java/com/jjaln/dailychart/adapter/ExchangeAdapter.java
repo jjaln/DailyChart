@@ -1,4 +1,4 @@
-package com.jjaln.dailychart.Recycler.exchange;
+package com.jjaln.dailychart.adapter;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -10,14 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jjaln.dailychart.R;
+import com.jjaln.dailychart.feature.Exchange;
 
 import java.util.ArrayList;
 
-public class Exchange_List_RecyclerAdapter extends RecyclerView.Adapter<Exchange_List_ViewHolder>
+public class ExchangeAdapter extends RecyclerView.Adapter<Exchange_List_ViewHolder>
 {
-    private ArrayList<Exchange_List_Data> Exchange_List;
+    private ArrayList<Exchange> Exchange_List;
 
-    public Exchange_List_RecyclerAdapter(ArrayList<Exchange_List_Data> list)
+    public ExchangeAdapter(ArrayList<Exchange> list)
     {
         this.Exchange_List = list;
     }
@@ -34,7 +35,7 @@ public class Exchange_List_RecyclerAdapter extends RecyclerView.Adapter<Exchange
 
     @Override
     public void onBindViewHolder(@NonNull Exchange_List_ViewHolder holder, int position) {
-        final Exchange_List_Data data = Exchange_List.get(position);
+        final Exchange data = Exchange_List.get(position);
 
         holder.icon.setImageResource(data.getImg());
         holder.itemView.setOnClickListener(new View.OnClickListener(){

@@ -1,4 +1,4 @@
-package com.jjaln.dailychart.Recycler.exchange;
+package com.jjaln.dailychart.feature;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Exchange_List_Data {
+public class Exchange {
     private int img;
     private String uri;
     private String name;

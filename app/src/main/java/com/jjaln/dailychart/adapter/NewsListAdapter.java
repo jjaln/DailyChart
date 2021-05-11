@@ -1,4 +1,4 @@
-package com.jjaln.dailychart.Recycler.News;
+package com.jjaln.dailychart.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,14 +12,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jjaln.dailychart.R;
+import com.jjaln.dailychart.feature.News;
 
 import java.util.List;
 
-public class News_List_RecyclerAdapter extends RecyclerView.Adapter<News_List_RecyclerAdapter.News_List_ViewHolder> {
-    private List<News_List_Data> news;
+public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.News_List_ViewHolder> {
+    private List<News> news;
     private Context context;
 
-    public News_List_RecyclerAdapter(List<News_List_Data> news, Context context)
+    public NewsListAdapter(List<News> news, Context context)
     {
         this.news = news;
         this.context= context;
@@ -59,7 +60,7 @@ public class News_List_RecyclerAdapter extends RecyclerView.Adapter<News_List_Re
             });
         }
 
-        public void setNewsItem(News_List_Data news){
+        public void setNewsItem(News news){
             tvNewsTitle.setText(news.getTitle());
             tvNewsDesc.setText(news.getDesc());
         }

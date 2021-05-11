@@ -43,7 +43,7 @@ public class CommunityActivity extends AppCompatActivity {
         super.onResume();
         ivBack = findViewById(R.id.iv_back);
 
-        category = new ArrayList<>(Arrays.asList(new String[]{"Bitcoin", "Ethereum", "Ripple", "Ada","Doge"}));
+        category = new ArrayList<>(Arrays.asList(new String[]{"Bitcoin", "Ethereum", "Ripple", "Ada","Polkadot"}));
         comCategoryList = new ArrayList<>();
         for (int i = 0; i < category.size(); i++)
             comCategoryList.add(new Category(i + 1, category.get(i)));

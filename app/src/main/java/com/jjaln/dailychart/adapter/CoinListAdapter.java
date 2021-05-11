@@ -1,4 +1,4 @@
-package com.jjaln.dailychart.Recycler.coinList;
+package com.jjaln.dailychart.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,21 +11,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.jjaln.dailychart.CoinInfo;
+import com.jjaln.dailychart.contents.CoinInfo;
 import com.jjaln.dailychart.R;
+import com.jjaln.dailychart.feature.Coin;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class Coin_List_RecyclerAdapter extends RecyclerView.Adapter<Coin_List_RecyclerAdapter.Coin_List_ViewHolder> {
+public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.Coin_List_ViewHolder> {
 
     DecimalFormat in = new DecimalFormat("###,###");
     DecimalFormat dot1 = new DecimalFormat("###.#");
     DecimalFormat dot2 = new DecimalFormat("###.##");
-    private ArrayList<Coin_List_Data> Coin_List;
+    private ArrayList<Coin> Coin_List;
     private Context mContext;
-    public  Coin_List_RecyclerAdapter(ArrayList<Coin_List_Data> list,Context context) {
+    public CoinListAdapter(ArrayList<Coin> list, Context context) {
         this.Coin_List = list;
         this.mContext = context;
     }
@@ -87,7 +88,7 @@ public class Coin_List_RecyclerAdapter extends RecyclerView.Adapter<Coin_List_Re
             });
         }
 
-        public void setCoinListItem(Coin_List_Data coins){
+        public void setCoinListItem(Coin coins){
             tvCoinName.setText(coins.getCoin_name());
             tvCoinPrice.setText(getFormat(coins.getMarket_price()));
             tvFlucPrice.setText(getFormat(coins.getFlucate_price()));
@@ -104,9 +105,9 @@ public class Coin_List_RecyclerAdapter extends RecyclerView.Adapter<Coin_List_Re
                     tvFlucPrice.setTextColor(Color.RED);
                     tvFlucRate.setTextColor(Color.RED);
                 } else {
-                    tvCoinPrice.setTextColor(Color.WHITE);
-                    tvFlucPrice.setTextColor(Color.WHITE);
-                    tvFlucRate.setTextColor(Color.WHITE);
+                    tvCoinPrice.setTextColor(Color.BLACK);
+                    tvFlucPrice.setTextColor(Color.BLACK);
+                    tvFlucRate.setTextColor(Color.BLACK);
                 }
             }
         }
