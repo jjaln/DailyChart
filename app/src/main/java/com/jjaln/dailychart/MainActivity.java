@@ -21,10 +21,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.jjaln.dailychart.contents.login.LoginActivity;
 import com.jjaln.dailychart.feature.Coin;
 import com.jjaln.dailychart.adapter.CoinListAdapter;
@@ -37,11 +42,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -236,14 +248,51 @@ public class MainActivity extends AppCompatActivity {
                 String xcoin_last_dot = data_list.getString("xcoin_last_dot");
                 String xcoin_last_ada = data_list.getString("xcoin_last_ada");
 
-                //double total_bithumb = Integer.parseInt(total_krw) +
+
 
                 float balance = Float.parseFloat(total_krw) + (Float.parseFloat(xcoin_last_btc) * Float.parseFloat(total_btc)) +
                         (Float.parseFloat(xcoin_last_eth) * Float.parseFloat(total_eth)) +
                         (Float.parseFloat(xcoin_last_xrp) * Float.parseFloat(total_xrp)) +
                         (Float.parseFloat(xcoin_last_ada) * Float.parseFloat(total_ada)) +
                         (Float.parseFloat(xcoin_last_dot) * Float.parseFloat(total_dot));
-                String Asset = "Bithumb : " + balance;
+
+
+
+                String accessKey = ("fRRqee9krxSvxTQsX9dTpirPgY7RqzoUKyPeAdUM");
+                String secretKey = ("nZT3FrtV95j1U2QwqIeIflI5pMDN5VfS0MwYY9xT");
+                String serverUrl = ("https://api.upbit.com");
+
+
+                Algorithm algorithm = Algorithm.HMAC256(secretKey);
+                String jwtToken = JWT.create()
+                        .withClaim("access_key", accessKey)
+                        .withClaim("nonce", UUID.randomUUID().toString())
+                        .sign(algorithm);
+
+                String authenticationToken = "Bearer " + jwtToken;
+                HttpClient client = HttpClientBuilder.create().build();
+                HttpGet request = new HttpGet(serverUrl + "/v1/accounts");
+                request.setHeader("Content-Type", "application/json");
+                request.addHeader("Authorization", authenticationToken);
+
+                HttpResponse response = client.execute(request);
+                HttpEntity entity = response.getEntity();
+
+
+                double balance_total = 0.0;
+                JsonParser jsonParser = new JsonParser();
+                JsonArray jsonArray = (JsonArray) jsonParser.parse(EntityUtils.toString(entity, "UTF-8"));
+                for (int i = 0; i < jsonArray.size(); i++) {
+                    JsonObject object = (JsonObject) jsonArray.get(i);
+                    String code = object.get("currency").getAsString();
+                    if(code.equals("KRW") || code.equals("BTC") || code.equals("ETH") || code.equals("XRP")
+                            || code.equals("ADA") || code.equals("DOT")) {
+                        Double balances = object.get("balance").getAsDouble();
+                        balance_total += balances;
+                    }
+                }
+                String Asset = "Bithumb : " + balance + " / Upbit : " + Double.toString(balance_total);
+
                 tv_currentAsset.setText(Asset);
                 String[] coin_list = {"BTC", "ETH", "XRP", "ADA", "DOT"};
                 ArrayList<String> coins = new ArrayList<>(Arrays.asList(coin_list));
