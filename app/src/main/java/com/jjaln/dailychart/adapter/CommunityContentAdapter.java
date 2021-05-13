@@ -1,15 +1,22 @@
 package com.jjaln.dailychart.adapter;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jjaln.dailychart.R;
 import com.jjaln.dailychart.contents.community.CommunityContentsActivity;
 import com.jjaln.dailychart.feature.Community_Data;
@@ -18,12 +25,15 @@ import com.jjaln.dailychart.feature.Reply;
 
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class CommunityContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Contents> items;
     private CommunityContentsActivity communityDetailActivity;
     private String token;
+    private String Q_category, Q_DBkey;
     private long id;
     private static final String TAG = "CommunityDetailAdapter:";
 
@@ -60,6 +70,8 @@ public class CommunityContentAdapter extends RecyclerView.Adapter<RecyclerView.V
         Log.d(TAG, "onBindViewHolder: " + position);
         if (getItemViewType(position) == 0) {
             Community_Data community = (Community_Data) items.get(position).getObject();
+            Q_category = community.getCategoryName();
+            Q_DBkey = community.getDBKEy();
             ((DetailContentViewHolder) holder).setItem(community);
         }
         else if (getItemViewType(position) == 1) {
@@ -106,15 +118,42 @@ public class CommunityContentAdapter extends RecyclerView.Adapter<RecyclerView.V
     public class ReplyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvReplyContent, tvReplyUsername;
-
+        private ImageView ivDeleteReply;
         public ReplyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvReplyUsername = itemView.findViewById(R.id.tv_reply_username);
             tvReplyContent = itemView.findViewById(R.id.tv_reply_content);
+            ivDeleteReply = itemView.findViewById(R.id.iv_delete_reply);
         }
         public void setItem(Reply reply) {
             tvReplyUsername.setText(reply.getUsername());
             tvReplyContent.setText(reply.getContent());
+            if(reply.getToken().equals(token))
+            {
+                ivDeleteReply.setVisibility(View.VISIBLE);
+                ivDeleteReply.setOnClickListener(v->{
+                    DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+                    AlertDialog.Builder alert = new AlertDialog.Builder(itemView.getContext());
+                    alert.setTitle("Reply Delete?");
+                    alert.setPositiveButton("accept", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            db.child("Reply")
+                                    .child(Q_category).
+                                    child(Q_DBkey).child(reply.getReply_key()).removeValue();
+                        }
+                    });
+                    alert.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                        }
+                    });
+                    alert.show();
+                });
+            }
+            else
+            { ivDeleteReply.setVisibility(View.INVISIBLE);}
         }
+
     }
 }

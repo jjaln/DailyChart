@@ -47,14 +47,14 @@
                         android:textSize="18dp" />
                 </LinearLayout>
 
-<!--                <ImageView-->
-<!--                    android:id="@+id/iv_delete_reply"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintTop_toTopOf="parent"-->
-<!--                    app:srcCompat="@drawable/ic_delete" />-->
+                <ImageView
+                    android:id="@+id/iv_delete_reply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_delete" />
             </LinearLayout>
 
             <TextView

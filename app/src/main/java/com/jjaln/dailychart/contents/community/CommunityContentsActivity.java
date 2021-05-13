@@ -152,6 +152,7 @@ public class CommunityContentsActivity extends AppCompatActivity {
                     replies.add(mReply);
                     items.add(new Contents(1, mReply));
                 }
+
                 communityDetailAdapter = new CommunityContentAdapter(items, (CommunityContentsActivity) mContext, token);
                 rvCommunityDetail.setLayoutManager(manager);
                 rvCommunityDetail.setAdapter(communityDetailAdapter);
@@ -177,7 +178,7 @@ public class CommunityContentsActivity extends AppCompatActivity {
         ivDelete_question.setOnClickListener(v ->
         {
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
-            alert.setTitle("Delete");
+            alert.setTitle("Post Delete?");
             alert.setPositiveButton("accept", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
