@@ -3,6 +3,7 @@ package com.jjaln.dailychart.contents.community;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -90,21 +92,27 @@ public class CommunityContentsActivity extends AppCompatActivity {
 
         mReply = FirebaseDatabase.getInstance().getReference();
         //댓글 쓰기
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        String username = pref.getString("username","");
+
         ivSendReply.setOnClickListener(v -> {
-            Log.d(TAG, "token :" + token);
-            Reply reply = new Reply();
-            reply.setContent(et_reply.getText().toString());
-            reply.setUsername(community.getUsername());
-            reply.setToken(token);
-            reply.setReply_key(mReply.child("Reply").
-                    child(community.getCategoryName()).
-                    child(community.getDBKEy()).push().getKey());
-            items.add(new Contents(1, reply));
-            mReply.child("Reply").
-                    child(community.getCategoryName()).
-                    child(community.getDBKEy()).
-                    child(reply.getReply_key()).setValue(reply);
-            shutdownReplyInput();
+            if(token.equals(""))
+                Toast.makeText(mContext,"Login needs",Toast.LENGTH_SHORT).show();
+            else {
+                Reply reply = new Reply();
+                reply.setContent(et_reply.getText().toString());
+                reply.setUsername(username);
+                reply.setToken(token);
+                reply.setReply_key(mReply.child("Reply").
+                        child(community.getCategoryName()).
+                        child(community.getDBKEy()).push().getKey());
+                items.add(new Contents(1, reply));
+                mReply.child("Reply").
+                        child(community.getCategoryName()).
+                        child(community.getDBKEy()).
+                        child(reply.getReply_key()).setValue(reply);
+                shutdownReplyInput();
+            }
         });
         //게시글 내용 불러오기
         addCommunityItem();

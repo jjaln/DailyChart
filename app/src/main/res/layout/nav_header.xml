@@ -17,12 +17,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/baloo"
-        android:text="Nomad Coder"
+        android:text="Daily Chart"
         android:textSize="24dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/aclonica"
-        android:text="clone coding" />
+        android:text="CrptoCurrency&#10;News &amp; Community" />
 </LinearLayout>

@@ -11,17 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SE">
-        <activity android:name=".contents.community.CommunitySearchActivity" />
-        <activity android:name=".contents.community.CommunityWriteActivity" />
-        <activity android:name=".contents.course.CoursesActivity" />
-        <activity android:name=".contents.community.CommunityActivity" />
-        <activity android:name=".contents.dashboard.UserDashBoardActivity" />
-        <activity android:name=".contents.login.LoginActivity" />
-        <activity android:name=".contents.community.CommunityContentsActivity" />
-        <activity android:name=".contents.CoinInfo" />
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
+            android:name=".SplashActivity"
             android:theme="@style/Theme.SE">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,7 +20,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+        <activity android:name=".contents.community.CommunitySearchActivity" />
+        <activity android:name=".contents.community.CommunityWriteActivity" />
+        <activity android:name=".contents.course.CoursesActivity" />
+        <activity android:name=".contents.community.CommunityActivity" />
+        <activity android:name=".contents.dashboard.UserDashBoardActivity" />
+        <activity android:name=".contents.login.LoginActivity" />
+        <activity android:name=".contents.community.CommunityContentsActivity" />
+        <activity android:name=".contents.dashboard.EditProfileActivity" />
+        <activity android:name=".contents.CoinInfo" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.SE"/>
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
     </application>
 
 </manifest>

@@ -26,12 +26,12 @@
         <ImageView
             android:id="@+id/iv_logo"
             android:layout_width="100dp"
-            android:layout_height="30dp"
+            android:layout_height="60dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_logo" />
+            app:srcCompat="@drawable/logo_main" />
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/riv_user"

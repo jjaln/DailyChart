@@ -14,6 +14,18 @@
 
         <include layout="@layout/toolbar_main" />
 
+        <TextView
+            android:id="@+id/tv_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:textSize="15dp" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
@@ -31,8 +43,8 @@
                 android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="16dp"
                 android:layout_weight="1"
                 android:gravity="left"
                 android:text="보유자산가치"
@@ -45,9 +57,9 @@
 
             <TextView
                 android:id="@+id/tv_currentAsset"
-                android:layout_marginLeft="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:gravity="left"
                 android:text="00000000"
@@ -60,16 +72,18 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_title"
                 app:layout_constraintVertical_bias="0.184" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_exchangeList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:layout_marginLeft="8dp"/>
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_CoinList"
-            android:layout_margin="8dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_margin="8dp" />
     </LinearLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

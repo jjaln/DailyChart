@@ -28,7 +28,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.makeramen.roundedimageview.RoundedImageView;;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -45,8 +44,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
-
-    private RoundedImageView rivUser;
     private SignInButton signInButton;
     public Context mContext;
 
@@ -54,7 +51,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         ivBack = findViewById(R.id.iv_back);
         mContext = this;
         tvToolbarTitle = findViewById(R.id.tv_toolbar_title);
@@ -123,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                                 pref = getSharedPreferences("pref", MODE_PRIVATE);
                                 editor = pref.edit();
                                 editor.putString("token", id);
+                                editor.putString("username",user.getDisplayName());
                                 editor.commit();
                                 finish();
                                 Toast.makeText(getApplicationContext(), "Complete", Toast.LENGTH_LONG).show();

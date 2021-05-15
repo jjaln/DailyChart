@@ -1,5 +1,7 @@
 package com.jjaln.dailychart.feature;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Coin {
+public class Coin implements Serializable {
 
     private int coin_img;
     private String coin_name;

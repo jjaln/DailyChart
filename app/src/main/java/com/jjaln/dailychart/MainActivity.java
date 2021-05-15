@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,19 +28,18 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.jjaln.dailychart.contents.login.LoginActivity;
-import com.jjaln.dailychart.feature.Coin;
-import com.jjaln.dailychart.adapter.CoinListAdapter;
-import com.jjaln.dailychart.feature.Exchange;
-import com.jjaln.dailychart.adapter.ExchangeAdapter;
-import com.jjaln.dailychart.contents.dashboard.UserDashBoardActivity;
-import com.jjaln.dailychart.wallet.Api_Client;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.jjaln.dailychart.adapter.CoinListAdapter;
+import com.jjaln.dailychart.adapter.ExchangeAdapter;
+import com.jjaln.dailychart.contents.dashboard.UserDashBoardActivity;
+import com.jjaln.dailychart.feature.Coin;
+import com.jjaln.dailychart.feature.Exchange;
+import com.jjaln.dailychart.wallet.Api_Client;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import org.apache.http.HttpEntity;
@@ -66,35 +66,36 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView nv;
     private CoinListAdapter coinAdapter;
     private LinearLayoutManager coinManager;
-    private TextView tv_currentAsset;
+    private TextView tv_currentAsset, tv_scroll;
     private RecyclerView rvCoin, rvExchange;
     private SharedPreferences pref;
     private String token;
-    private ArrayList<Coin> CoinData;
+    private ArrayList<Coin> CoinData,InitData;
     private FirebaseUser user;
     private RoundedImageView rivUser;
     private static final String TAG = "MainActivity";
-
+    Handler handler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("/////////","oncreate start");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        NetworkThread thread = new NetworkThread();
-        thread.start();
-
+        Intent intent = getIntent();
+        InitData = (ArrayList<Coin>)intent.getSerializableExtra("init");
         toolbarNomad = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbarNomad);
 
         ivMenu = findViewById(R.id.iv_back);
         tv_currentAsset = findViewById(R.id.tv_currentAsset);
+        tv_scroll = findViewById(R.id.tv_scroll);
         drawer = findViewById(R.id.drawer);
         rivUser = (RoundedImageView) findViewById(R.id.riv_user);
 
         ivMenu.setOnClickListener(v -> {
             drawer.openDrawer(Gravity.LEFT);
         });
+        coinManager = new LinearLayoutManager(mContext,RecyclerView.VERTICAL,false);
 
         LayoutInflater mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         mInflater.inflate(R.layout.navigation, drawer, true);
@@ -114,12 +115,15 @@ public class MainActivity extends AppCompatActivity {
         rvExchange.setAdapter(new ExchangeAdapter(ExchangeData));
 
         rvCoin = findViewById(R.id.rv_CoinList);
+        coinAdapter = new CoinListAdapter(InitData,mContext);
+        rvCoin.setLayoutManager(coinManager);
+        rvCoin.setAdapter(coinAdapter);
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         googleSignInClient = GoogleSignIn.getClient(this, gso);
-
         Log.d("/////////","oncreate End");
     }
 
@@ -127,7 +131,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
 
         super.onResume();
-
+        NetworkThread thread = new NetworkThread();
+        thread.start();
         Log.d("/////////","OnResume Start");
         pref = getSharedPreferences("pref", MODE_PRIVATE);
         token = pref.getString("token", "");
@@ -140,11 +145,6 @@ public class MainActivity extends AppCompatActivity {
             nv.getMenu().findItem(R.id.dashboard).setVisible(true);
         }
         appbarRight();
-
-        coinManager = new LinearLayoutManager(mContext,RecyclerView.VERTICAL,false);
-        rvCoin.setLayoutManager(coinManager);
-        rvCoin.setAdapter(coinAdapter);
-
         Log.d("/////////","OnResume End");
     }
 
@@ -177,13 +177,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         if (item.getTitle().equals("Dashboard")) {
-                            Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(v.getContext(), UserDashBoardActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             v.getContext().startActivity(intent);
                         } else {
                             SharedPreferences.Editor editor = pref.edit();
                             editor.putString("token","");
+                            editor.putString("username","");
                             editor.commit();
                             FirebaseAuth.getInstance().signOut();
                             googleSignInClient.signOut();
@@ -308,7 +308,9 @@ public class MainActivity extends AppCompatActivity {
                     String fluctate_rate_24H = dt_list.getString("fluctate_rate_24H");
                     CoinData.add(new Coin(c_img, coin, closing_price, fluctate_rate_24H, fluctate_24H));
                     coinAdapter = new CoinListAdapter(CoinData,mContext);
-                    Log.d("//////////", closing_price + " / " + fluctate_24H);
+                    rvCoin.setLayoutManager(coinManager);
+                    rvCoin.setAdapter(coinAdapter);
+//                    Log.d("//////////", closing_price + " / " + fluctate_24H);
                 }
 
                 Log.d("/////////","Thread End");

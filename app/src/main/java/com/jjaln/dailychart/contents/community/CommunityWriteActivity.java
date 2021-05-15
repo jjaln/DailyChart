@@ -65,26 +65,29 @@ public class CommunityWriteActivity extends AppCompatActivity {
         btnSaveCommunity.setOnClickListener(v -> {
             SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
             String token = pref.getString("token", "");
+            String username = pref.getString("username","");
             String flag = autoCompleteTextView.getText().toString();
-            if (category.indexOf(flag) != -1) {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                Question question = new Question();
-                question.setTitle(etTitle.getText().toString());
-                question.setContent(etContents.getText().toString());
-                question.setToken(token);
-                question.setCategoryName(autoCompleteTextView.getText().toString());
-                question.setCategoryId(category.indexOf(question.getCategoryName()));
-                question.setUsername(user.getDisplayName());
-                question.setDBKey( mDatabase.child(autoCompleteTextView.getText().toString()).push().getKey());
-                mDatabase.child("Post").
-                        child(autoCompleteTextView.getText().toString()).
-                        child(question.getDBKey()).setValue(question);
-                finish();
-            }
-            else
-            {
-                Toast toast = Toast.makeText(this,"Select Category",Toast.LENGTH_SHORT);
-                toast.show();;
+            if (etTitle.getText().toString().equals("") | etContents.getText().toString().equals(""))
+                Toast.makeText(this, "Check your Input", Toast.LENGTH_SHORT).show();
+            else {
+                if (category.indexOf(flag) != -1) {
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    Question question = new Question();
+                    question.setTitle(etTitle.getText().toString());
+                    question.setContent(etContents.getText().toString());
+                    question.setToken(token);
+                    question.setCategoryName(autoCompleteTextView.getText().toString());
+                    question.setCategoryId(category.indexOf(question.getCategoryName()));
+                    question.setUsername(username);
+                    question.setDBKey(mDatabase.child(autoCompleteTextView.getText().toString()).push().getKey());
+                    mDatabase.child("Post").
+                            child(autoCompleteTextView.getText().toString()).
+                            child(question.getDBKey()).setValue(question);
+                    finish();
+                } else {
+                    Toast toast = Toast.makeText(this, "Select Category", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
             }
         });
     }
