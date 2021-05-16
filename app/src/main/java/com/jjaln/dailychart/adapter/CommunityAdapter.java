@@ -47,7 +47,7 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Comm
 
     public class CommunityViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView tvCommunityTitle,tvCommunityCategory,tvRegTime, tvUsername,tvReplyCount;
+        private TextView tvCommunityTitle,tvCommunityCategory, tvUsername;
 
         public CommunityViewHolder(@NonNull View itemView) {
                 super(itemView);

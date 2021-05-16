@@ -61,7 +61,7 @@ public class UserDashBoardActivity extends AppCompatActivity {
         tabsDashboard.setupWithViewPager(vpContainer);
 
         tabsDashboard.getTabAt(0).setText("My Profile");
-        tabsDashboard.getTabAt(1).setText("My Posts");
+        tabsDashboard.getTabAt(1).setText("My Post");
         tabsDashboard.getTabAt(2).setText("My Payment History");
     }
 }

@@ -15,7 +15,6 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:padding="15dp">
 
 
@@ -26,7 +25,7 @@
             android:textSize="15dp"
             android:textColor="@android:color/black"
             android:layout_marginLeft="15dp"
-            android:text="[프론트엔드] 꿈나무개발자가 되고싶은 꿈나무의 포폴 웹사이트 (feat. 추억의 싸이월드)"
+            android:text="ttttttttt"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
