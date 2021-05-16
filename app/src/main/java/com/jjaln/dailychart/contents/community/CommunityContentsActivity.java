@@ -196,6 +196,9 @@ public class CommunityContentsActivity extends AppCompatActivity {
                     mDB.child("Reply")
                             .child(community.getCategoryName()).
                             child(community.getDBKEy()).removeValue();
+                    mDB.child("Search")
+                            .child(community.getDBKEy()).
+                            removeValue();
                     intent1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     finish();
                     startActivity(intent1);

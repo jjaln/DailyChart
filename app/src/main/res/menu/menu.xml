@@ -11,11 +11,14 @@
             android:id="@+id/dashboard"
             android:title="DashBoard"/>
         <item
-            android:id="@+id/courses"
-            android:title="Courses" />
+            android:id="@+id/premium"
+            android:title="Premium" />
         <item
             android:id="@+id/community"
             android:title="Community"/>
+        <item
+            android:id="@+id/about"
+            android:title="About"/>
     </group>
 
 </menu>

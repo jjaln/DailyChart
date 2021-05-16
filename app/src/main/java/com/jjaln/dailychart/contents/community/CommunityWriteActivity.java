@@ -83,6 +83,7 @@ public class CommunityWriteActivity extends AppCompatActivity {
                     mDatabase.child("Post").
                             child(autoCompleteTextView.getText().toString()).
                             child(question.getDBKey()).setValue(question);
+                    mDatabase.child("Search").child(question.getDBKey()).setValue(question);
                     finish();
                 } else {
                     Toast toast = Toast.makeText(this, "Select Category", Toast.LENGTH_SHORT);

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#F9FAFB"
     android:orientation="vertical"
-    tools:context=".EditProfileActivity">
+    tools:context=".contents.dashboard.EditProfileActivity">
 
     <include layout="@layout/toolbar_serve" />
 
@@ -100,7 +100,9 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tf_edit_nickname"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:lines="1"
+                        android:singleLine="true"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
                 <LinearLayout

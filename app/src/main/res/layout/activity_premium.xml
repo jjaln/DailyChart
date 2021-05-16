@@ -6,17 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".contents.course.CoursesActivity">
+    tools:context=".contents.premium.PremiumActivity">
 
 
     <include layout="@layout/toolbar_serve" />
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_course_list"
+    <WebView
+        android:id="@+id/webView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </androidx.recyclerview.widget.RecyclerView>
-
+        android:layout_height="match_parent"
+        />
 
 </LinearLayout>

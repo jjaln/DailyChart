@@ -13,20 +13,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.gson.Gson;
 import com.jjaln.dailychart.R;
 import com.makeramen.roundedimageview.RoundedImageView;
 
-import lombok.SneakyThrows;
-
 import static android.content.Context.MODE_PRIVATE;
 
-public class DashBoardFragment1 extends Fragment {
+public class UserInfoFragment extends Fragment {
     private TextView tvDashName, tvDashUsername;
     private RoundedImageView rivDashboardUser, rivUser;
 
@@ -39,13 +35,13 @@ public class DashBoardFragment1 extends Fragment {
     private String token, username;
 
 
-    public DashBoardFragment1(RoundedImageView rivUser) {
+    public UserInfoFragment(RoundedImageView rivUser) {
         this.rivUser = rivUser;
     }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate( R.layout.dashboard_frag_1, container, false );
+        View view = inflater.inflate( R.layout.dashboard_user_info, container, false );
         mContext = getContext();
 
 

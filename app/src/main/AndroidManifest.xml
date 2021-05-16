@@ -22,7 +22,8 @@
         </activity>
         <activity android:name=".contents.community.CommunitySearchActivity" />
         <activity android:name=".contents.community.CommunityWriteActivity" />
-        <activity android:name=".contents.course.CoursesActivity" />
+        <activity android:name=".contents.premium.PremiumActivity" />
+        <activity android:name=".contents.about.AboutActivity" />
         <activity android:name=".contents.community.CommunityActivity" />
         <activity android:name=".contents.dashboard.UserDashBoardActivity" />
         <activity android:name=".contents.login.LoginActivity" />

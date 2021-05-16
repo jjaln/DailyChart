@@ -7,32 +7,34 @@
     android:orientation="vertical"
     tools:context=".contents.community.CommunityWriteActivity">
 
-    <include layout="@layout/toolbar_write"/>
+    <include layout="@layout/toolbar_write" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tv_input_title"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="제목 쓰기"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="5dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        android:hint="제목 쓰기">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:singleLine="true" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:hint="카테고리 고르기"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
+        android:hint="카테고리 고르기">
 
         <AutoCompleteTextView
             android:id="@+id/autoCompleteText"
@@ -40,24 +42,24 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:inputType="none"
-            android:textColor="#000"/>
+            android:textColor="#000" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tv_input_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:hint="내용 쓰기"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        android:hint="내용 쓰기">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/et_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="top"/>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top" />
     </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

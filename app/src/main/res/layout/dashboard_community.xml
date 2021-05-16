@@ -16,14 +16,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="수강 내역이 없습니다."
+            android:text="게시글 작성내역이 없습니다."
             android:textSize="20dp"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_find_one"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Find one Now"
+            android:text="Write Post"
             android:background="@drawable/corner_round"
             android:textColor="#374151"
             android:textAllCaps="false"
@@ -35,7 +35,7 @@
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_my_courses"
+        android:id="@+id/rv_my_post"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
