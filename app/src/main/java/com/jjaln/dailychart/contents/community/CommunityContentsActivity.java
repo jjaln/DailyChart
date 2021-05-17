@@ -70,7 +70,6 @@ public class CommunityContentsActivity extends AppCompatActivity {
 
         //댓글 쓰기
         replyBar = (RelativeLayout) findViewById(R.id.reply_bar);
-        replyBar.setVisibility(View.INVISIBLE);
         ivSendReply = findViewById(R.id.iv_reply_send);
         et_reply = findViewById(R.id.et_reply);
         //툴바
@@ -83,7 +82,7 @@ public class CommunityContentsActivity extends AppCompatActivity {
 
 
         tvToolbarTitle = findViewById(R.id.tv_toolbar_title);
-        tvToolbarTitle.setText("Community");
+        tvToolbarTitle.setText(community.getTitle());
 
         manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         rvCommunityDetail = findViewById(R.id.rv_community_detail);
@@ -125,7 +124,6 @@ public class CommunityContentsActivity extends AppCompatActivity {
 
     public void showReplyInput() {           //댓글 키보드 쓰기
         RelativeLayout replyBar = (RelativeLayout) findViewById(R.id.reply_bar);
-        replyBar.setVisibility(View.VISIBLE);
 
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         etReply = (EditText) findViewById(R.id.et_reply);
@@ -135,7 +133,6 @@ public class CommunityContentsActivity extends AppCompatActivity {
 
     public void shutdownReplyInput() {           //댓글 키보드 닫기
         RelativeLayout replyBar = (RelativeLayout) findViewById(R.id.reply_bar);
-        replyBar.setVisibility(View.INVISIBLE);
 
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         etReply = (EditText) findViewById(R.id.et_reply);
@@ -155,6 +152,7 @@ public class CommunityContentsActivity extends AppCompatActivity {
                 items = new ArrayList<>();
                 replies = new ArrayList<>();
                 items.add(new Contents(0, community));
+
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Reply mReply = dataSnapshot.getValue(Reply.class);
                     replies.add(mReply);

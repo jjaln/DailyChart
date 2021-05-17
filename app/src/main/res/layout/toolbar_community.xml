@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
-            android:text="Community"
+            android:text="커뮤니티"
             android:textColor="@android:color/black"
             android:textSize="25dp"
             app:layout_constraintBottom_toBottomOf="parent"

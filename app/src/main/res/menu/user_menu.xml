@@ -4,9 +4,9 @@
         android:id="@+id/group1">
         <item
             android:id="@+id/user_dashboard"
-            android:title="Dashboard"/>
+            android:title="내 정보"/>
         <item
             android:id="@+id/user_signout"
-            android:title="SignOut"/>
+            android:title="로그아웃"/>
     </group>
 </menu>

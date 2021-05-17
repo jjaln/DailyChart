@@ -92,7 +92,6 @@ public class CommunityContentAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public class DetailContentViewHolder extends RecyclerView.ViewHolder {
 
-        private AppCompatButton btnReply;
         private TextView tvDetailTitle, tvDetailUsername, tvDetailCategory, tvDetailContents;
 
         public DetailContentViewHolder(@NonNull View itemView) {
@@ -101,10 +100,7 @@ public class CommunityContentAdapter extends RecyclerView.Adapter<RecyclerView.V
             tvDetailUsername = itemView.findViewById(R.id.tv_detail_username);
             tvDetailCategory = itemView.findViewById(R.id.tv_detail_category);
             tvDetailContents = itemView.findViewById(R.id.tv_detail_content);
-            btnReply = itemView.findViewById(R.id.btn_reply);
-            btnReply.setOnClickListener(v -> {
-                communityDetailActivity.showReplyInput();
-            });
+
         }
 
         public void setItem(Community_Data community) {

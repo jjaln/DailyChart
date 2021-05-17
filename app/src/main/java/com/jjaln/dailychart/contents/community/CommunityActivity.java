@@ -49,7 +49,7 @@ public class CommunityActivity extends AppCompatActivity {
             comCategoryList.add(new Category(i + 1, category.get(i)));
 
         tvToolbarTitle = findViewById(R.id.tv_toolbar_title);
-        tvToolbarTitle.setText("Community");
+        tvToolbarTitle.setText("커뮤니티");
 
         pref = getSharedPreferences("pref", MODE_PRIVATE);
         token = pref.getString("token", "");

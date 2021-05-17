@@ -26,14 +26,17 @@
 
         <TextView
             android:id="@+id/tv_toolbar_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:text="Community"
+            android:layout_marginLeft="25dp"
+            android:text="커뮤니티"
             android:textColor="@android:color/black"
             android:textSize="25dp"
+            android:maxLines="1"
+            android:ellipsize="end"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_back"
+            app:layout_constraintEnd_toStartOf="@id/iv_delete_question"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
