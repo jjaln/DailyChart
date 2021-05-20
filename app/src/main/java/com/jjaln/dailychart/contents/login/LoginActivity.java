@@ -99,11 +99,7 @@ public class LoginActivity extends AppCompatActivity {
             firebaseAuthWithGoogle(task);
         }
     }
-    public void SignOut()
-    {
-        FirebaseAuth.getInstance().signOut();
-        mGoogleSignInClient.signOut();
-    }
+
     private void firebaseAuthWithGoogle(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
@@ -119,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                                 pref = getSharedPreferences("pref", MODE_PRIVATE);
                                 editor = pref.edit();
                                 editor.putString("token", id);
-                                editor.putString("username",user.getDisplayName());
+                                editor.putString("username", user.getDisplayName());
                                 editor.commit();
                                 finish();
                                 Toast.makeText(getApplicationContext(), "Complete", Toast.LENGTH_LONG).show();

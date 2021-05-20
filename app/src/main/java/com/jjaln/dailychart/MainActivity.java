@@ -129,14 +129,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-
         super.onResume();
-        NetworkThread thread = new NetworkThread();
-        thread.start();
-        Log.d("/////////","OnResume Start");
         pref = getSharedPreferences("pref", MODE_PRIVATE);
         token = pref.getString("token", "");
-
         if (token.equals("")) {
             nv.getMenu().findItem(R.id.login).setVisible(true);
             nv.getMenu().findItem(R.id.dashboard).setVisible(false);
@@ -144,6 +139,8 @@ public class MainActivity extends AppCompatActivity {
             nv.getMenu().findItem(R.id.login).setVisible(false);
             nv.getMenu().findItem(R.id.dashboard).setVisible(true);
         }
+        NetworkThread thread = new NetworkThread();
+        thread.start();
         appbarRight();
         Log.d("/////////","OnResume End");
     }
