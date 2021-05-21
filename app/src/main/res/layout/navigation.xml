@@ -13,6 +13,5 @@
         android:background="@android:color/white"
         android:layout_gravity="start">
 
-
     </com.google.android.material.navigation.NavigationView>
 </merge>

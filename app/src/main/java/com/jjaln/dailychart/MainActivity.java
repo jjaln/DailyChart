@@ -86,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
         toolbarNomad = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbarNomad);
 
+        pref = getSharedPreferences("pref", MODE_PRIVATE);
+        token = pref.getString("token", "");
+
         ivMenu = findViewById(R.id.iv_back);
         tv_currentAsset = findViewById(R.id.tv_currentAsset);
         tv_scroll = findViewById(R.id.tv_scroll);
@@ -130,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        pref = getSharedPreferences("pref", MODE_PRIVATE);
         token = pref.getString("token", "");
         if (token.equals("")) {
             nv.getMenu().findItem(R.id.login).setVisible(true);
@@ -173,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                 p.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getTitle().equals("Dashboard")) {
+                        if (item.getTitle().equals("내 정보")) {
                             Intent intent = new Intent(v.getContext(), UserDashBoardActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             v.getContext().startActivity(intent);

@@ -54,7 +54,7 @@ public class CommunityListAdapter extends RecyclerView.Adapter<CommunityListAdap
         public CommunityViewHolder(@NonNull View itemView) {
             super(itemView);
             tvCommunityTitle = itemView.findViewById(R.id.tv_community_title);
-            //tvCommunityCategory = itemView.findViewById(R.id.tv_community_category);
+            tvCommunityCategory = itemView.findViewById(R.id.tv_community_category);
             tvUsername = itemView.findViewById(R.id.tv_username);
 
             itemView.setOnClickListener(v->{
@@ -68,7 +68,7 @@ public class CommunityListAdapter extends RecyclerView.Adapter<CommunityListAdap
 
         public void setCommunityItem(Community_Data community){
             tvCommunityTitle.setText(community.getTitle());
-            //tvCommunityCategory.setText(community.getCategoryName());
+            tvCommunityCategory.setText(community.getCategoryName());
             tvUsername.setText(community.getUsername());
         }
     }
