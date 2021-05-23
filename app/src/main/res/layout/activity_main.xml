@@ -25,6 +25,12 @@
             android:scrollHorizontally="true"
             android:singleLine="true"
             android:textSize="15dp" />
+        <Button
+            android:id="@+id/apibutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text = "API Key 입력"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
@@ -62,14 +68,30 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:gravity="left"
-                android:text="00000000"
+                android:text="Bithumb : 0"
                 android:textColor="@color/black"
-                android:textSize="20dp"
+                android:textSize="18dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title"
+                app:layout_constraintVertical_bias="0.184" />
+            <TextView
+                android:id="@+id/tv_currentAsset2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="Upbit : 0"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_currentAsset"
                 app:layout_constraintVertical_bias="0.184" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

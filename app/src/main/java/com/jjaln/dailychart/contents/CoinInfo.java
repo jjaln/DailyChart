@@ -104,8 +104,8 @@ public class CoinInfo extends AppCompatActivity {
             }
         });
 
-        NetworkThread thread = new NetworkThread();
-        thread.start();
+        //NetworkThread thread = new NetworkThread();
+        //thread.start();
     }
 
 
