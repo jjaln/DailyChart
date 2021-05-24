@@ -1,10 +1,12 @@
 package com.jjaln.dailychart;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.Gravity;
@@ -58,6 +60,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 
+import lombok.SneakyThrows;
+
 public class MainActivity extends AppCompatActivity {
 
     private Context mContext = MainActivity.this;
@@ -69,11 +73,11 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView nv;
     private CoinListAdapter coinAdapter;
     private LinearLayoutManager coinManager;
-    private TextView tv_currentAsset,tv_currentAsset2, tv_scroll;
+    private TextView tv_currentAsset, tv_currentAsset2, tv_scroll;
     private RecyclerView rvCoin, rvExchange;
     private SharedPreferences pref;
     private String token;
-    private ArrayList<Coin> CoinData,InitData;
+    private ArrayList<Coin> CoinData, InitData;
     private FirebaseUser user;
     private RoundedImageView rivUser;
     private static final String TAG = "MainActivity";
@@ -87,14 +91,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("/////////","oncreate start");
+        Log.d("/////////", "oncreate start");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (android.os.Build.VERSION.SDK_INT > 9) { StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build(); StrictMode.setThreadPolicy(policy); }
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
 
         Intent intent = getIntent();
-        InitData = (ArrayList<Coin>)intent.getSerializableExtra("init");
+        InitData = (ArrayList<Coin>) intent.getSerializableExtra("init");
         toolbarNomad = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbarNomad);
 
@@ -108,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         ivMenu.setOnClickListener(v -> {
             drawer.openDrawer(Gravity.LEFT);
         });
-        coinManager = new LinearLayoutManager(mContext,RecyclerView.VERTICAL,false);
+        coinManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
 
         LayoutInflater mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         mInflater.inflate(R.layout.navigation, drawer, true);
@@ -128,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         rvExchange.setAdapter(new ExchangeAdapter(ExchangeData));
 
         rvCoin = findViewById(R.id.rv_CoinList);
-        coinAdapter = new CoinListAdapter(InitData,mContext);
+        coinAdapter = new CoinListAdapter(InitData, mContext);
         rvCoin.setLayoutManager(coinManager);
         rvCoin.setAdapter(coinAdapter);
 
@@ -137,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
         googleSignInClient = GoogleSignIn.getClient(this, gso);
-        Log.d("/////////","oncreate End");
+        Log.d("/////////", "oncreate End");
 
         apibutton = findViewById(R.id.apibutton);
         apibutton.setOnClickListener(new View.OnClickListener() {
@@ -153,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -178,14 +186,9 @@ public class MainActivity extends AppCompatActivity {
             nv.getMenu().findItem(R.id.dashboard).setVisible(true);
         }
         NetworkThread thread = new NetworkThread();
-
-        handler.post(thread);
-
         thread.start();
 
-
-
-        Log.d("/////////","OnResume End");
+        Log.d("/////////", "OnResume End");
     }
 
     private void appbarRight() {
@@ -222,8 +225,8 @@ public class MainActivity extends AppCompatActivity {
                             v.getContext().startActivity(intent);
                         } else {
                             SharedPreferences.Editor editor = pref.edit();
-                            editor.putString("token","");
-                            editor.putString("username","");
+                            editor.putString("token", "");
+                            editor.putString("username", "");
                             editor.commit();
                             FirebaseAuth.getInstance().signOut();
                             googleSignInClient.signOut();
@@ -245,63 +248,56 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
     class NetworkThread extends Thread {
-
-
+        @SneakyThrows
         @Override
         public void run() {
-            try {
+            while (true) {
                 int a = 0;
                 Api_Client api = new Api_Client("10c5e543905bee33d2c2d0f9c5fa2074",
                         "15c43069ef37eeff750d1f7255d31d11");
                 HashMap<String, String> rgParams = new HashMap<String, String>();
                 rgParams.put("currency", "ALL");
 
-                    double balance = 0.0;
-                    // API 를 이용하여 info-balance 의 결과값을 JSON 타입으로 가져오기
-                    final String result = api.callApi("/info/balance", rgParams);
-                    // JSONObject 객체에 담는다.
-                    JSONObject obj = new JSONObject(result);
-                    String status = obj.getString("status");
-                    // 'data' 객체는 Object
-                    JSONObject data_list = obj.getJSONObject("data");
-                    String total_krw = data_list.getString("total_krw");
-                    String in_use_krw = data_list.getString("in_use_krw");
-                    String available_krw = data_list.getString("available_krw");
-                    String total_btc = data_list.getString("total_btc");
-                    String in_use_btc = data_list.getString("in_use_btc");
-                    String available_btc = data_list.getString("available_btc");
-                    String total_eth = data_list.getString("total_eth");
-                    String in_use_eth = data_list.getString("in_use_eth");
-                    String available_eth = data_list.getString("available_eth");
-                    String total_xrp = data_list.getString("total_xrp");
-                    String in_use_xrp = data_list.getString("in_use_xrp");
-                    String available_xrp = data_list.getString("available_xrp");
-                    String total_dot = data_list.getString("total_dot");
-                    String in_use_dot = data_list.getString("in_use_dot");
-                    String available_dot = data_list.getString("available_dot");
-                    String total_ada = data_list.getString("total_ada");
-                    String in_use_ada = data_list.getString("in_use_ada");
-                    String available_ada = data_list.getString("available_ada");
-                    String xcoin_last_btc = data_list.getString("xcoin_last_btc");
-                    String xcoin_last_eth = data_list.getString("xcoin_last_eth");
-                    String xcoin_last_xrp = data_list.getString("xcoin_last_xrp");
-                    String xcoin_last_dot = data_list.getString("xcoin_last_dot");
-                    String xcoin_last_ada = data_list.getString("xcoin_last_ada");
+                double balance = 0.0;
+                // API 를 이용하여 info-balance 의 결과값을 JSON 타입으로 가져오기
+                final String result = api.callApi("/info/balance", rgParams);
+                // JSONObject 객체에 담는다.
+                JSONObject obj = new JSONObject(result);
+                String status = obj.getString("status");
+                // 'data' 객체는 Object
+                JSONObject data_list = obj.getJSONObject("data");
+                String total_krw = data_list.getString("total_krw");
+                String in_use_krw = data_list.getString("in_use_krw");
+                String available_krw = data_list.getString("available_krw");
+                String total_btc = data_list.getString("total_btc");
+                String in_use_btc = data_list.getString("in_use_btc");
+                String available_btc = data_list.getString("available_btc");
+                String total_eth = data_list.getString("total_eth");
+                String in_use_eth = data_list.getString("in_use_eth");
+                String available_eth = data_list.getString("available_eth");
+                String total_xrp = data_list.getString("total_xrp");
+                String in_use_xrp = data_list.getString("in_use_xrp");
+                String available_xrp = data_list.getString("available_xrp");
+                String total_dot = data_list.getString("total_dot");
+                String in_use_dot = data_list.getString("in_use_dot");
+                String available_dot = data_list.getString("available_dot");
+                String total_ada = data_list.getString("total_ada");
+                String in_use_ada = data_list.getString("in_use_ada");
+                String available_ada = data_list.getString("available_ada");
+                String xcoin_last_btc = data_list.getString("xcoin_last_btc");
+                String xcoin_last_eth = data_list.getString("xcoin_last_eth");
+                String xcoin_last_xrp = data_list.getString("xcoin_last_xrp");
+                String xcoin_last_dot = data_list.getString("xcoin_last_dot");
+                String xcoin_last_ada = data_list.getString("xcoin_last_ada");
 
 
-                    balance = Float.parseFloat(total_krw) + (Float.parseFloat(xcoin_last_btc) * Float.parseFloat(total_btc)) +
-                            (Float.parseFloat(xcoin_last_eth) * Float.parseFloat(total_eth)) +
-                            (Float.parseFloat(xcoin_last_xrp) * Float.parseFloat(total_xrp)) +
-                            (Float.parseFloat(xcoin_last_ada) * Float.parseFloat(total_ada)) +
-                            (Float.parseFloat(xcoin_last_dot) * Float.parseFloat(total_dot));
+                balance = Float.parseFloat(total_krw) + (Float.parseFloat(xcoin_last_btc) * Float.parseFloat(total_btc)) +
+                        (Float.parseFloat(xcoin_last_eth) * Float.parseFloat(total_eth)) +
+                        (Float.parseFloat(xcoin_last_xrp) * Float.parseFloat(total_xrp)) +
+                        (Float.parseFloat(xcoin_last_ada) * Float.parseFloat(total_ada)) +
+                        (Float.parseFloat(xcoin_last_dot) * Float.parseFloat(total_dot));
                 String Asset = "Bithumb : " + form.format(balance);
-
-
-
-
 
 
                 String[] coin_list = {"BTC", "ETH", "XRP", "ADA", "DOT"};
@@ -318,69 +314,66 @@ public class MainActivity extends AppCompatActivity {
                     String fluctate_24H = dt_list.getString("fluctate_24H");
                     String fluctate_rate_24H = dt_list.getString("fluctate_rate_24H");
                     CoinData.add(new Coin(c_img, coin, closing_price, fluctate_rate_24H, fluctate_24H));
-                    coinAdapter = new CoinListAdapter(CoinData,mContext);
-                    rvCoin.setLayoutManager(coinManager);
-                    rvCoin.setAdapter(coinAdapter);
+                    coinAdapter = new CoinListAdapter(CoinData, mContext);
 //                    Log.d("//////////", closing_price + " / " + fluctate_24H);
-                    
                 }
+//
+//                String accessKey = ("fRRqee9krxSvxTQsX9dTpirPgY7RqzoUKyPeAdUM");
+//                String secretKey = ("nZT3FrtV95j1U2QwqIeIflI5pMDN5VfS0MwYY9xT");
+//                String serverUrl = ("https://api.upbit.com");
+//
+//
+//                Algorithm algorithm = Algorithm.HMAC256(secretKey);
+//                String jwtToken = JWT.create()
+//                        .withClaim("access_key", accessKey)
+//                        .withClaim("nonce", UUID.randomUUID().toString())
+//                        .sign(algorithm);
+//
+//                String authenticationToken = "Bearer " + jwtToken;
+//                HttpClient client = HttpClientBuilder.create().build();
+//                HttpGet request = new HttpGet(serverUrl + "/v1/accounts");
+//                request.setHeader("Content-Type", "application/json");
+//                request.addHeader("Authorization", authenticationToken);
+//
+//                HttpResponse response = client.execute(request);
+//                HttpEntity entity = response.getEntity();
+//
+//
+//                double balance_total = 0.0;
+//                JsonParser jsonParser = new JsonParser();
+//                JsonArray jsonArray = (JsonArray) jsonParser.parse(EntityUtils.toString(entity, "UTF-8"));
+//                for (int i = 0; i < jsonArray.size(); i++) {
+//                    JsonObject object = (JsonObject) jsonArray.get(i);
+//                    String code = object.get("currency").getAsString();
+//                    if (code.equals("KRW") || code.equals("BTC") || code.equals("ETH") || code.equals("XRP")
+//                            || code.equals("ADA") || code.equals("DOT")) {
+//                        Double balances = object.get("balance").getAsDouble();
+//                        balance_total += balances;
+//                    }
+//
+//                    String Asset2 = "Upbit : " + form.format(balance_total);
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run(){
+//                            //tv_currentAsset.setText(Asset);
+//                            tv_currentAsset2.setText(Asset2);}
+//                    });
+//                }
 
-                String accessKey = ("fRRqee9krxSvxTQsX9dTpirPgY7RqzoUKyPeAdUM");
-                String secretKey = ("nZT3FrtV95j1U2QwqIeIflI5pMDN5VfS0MwYY9xT");
-                String serverUrl = ("https://api.upbit.com");
-
-
-                Algorithm algorithm = Algorithm.HMAC256(secretKey);
-                String jwtToken = JWT.create()
-                        .withClaim("access_key", accessKey)
-                        .withClaim("nonce", UUID.randomUUID().toString())
-                        .sign(algorithm);
-
-                String authenticationToken = "Bearer " + jwtToken;
-                HttpClient client = HttpClientBuilder.create().build();
-                HttpGet request = new HttpGet(serverUrl + "/v1/accounts");
-                request.setHeader("Content-Type", "application/json");
-                request.addHeader("Authorization", authenticationToken);
-
-                HttpResponse response = client.execute(request);
-                HttpEntity entity = response.getEntity();
-
-
-                double balance_total = 0.0;
-                JsonParser jsonParser = new JsonParser();
-                JsonArray jsonArray = (JsonArray) jsonParser.parse(EntityUtils.toString(entity, "UTF-8"));
-                for (int i = 0; i < jsonArray.size(); i++) {
-                    JsonObject object = (JsonObject) jsonArray.get(i);
-                    String code = object.get("currency").getAsString();
-                    if (code.equals("KRW") || code.equals("BTC") || code.equals("ETH") || code.equals("XRP")
-                            || code.equals("ADA") || code.equals("DOT")) {
-                        Double balances = object.get("balance").getAsDouble();
-                        balance_total += balances;
-                    }
-
-                    String Asset2 = "Upbit : " + form.format(balance_total);
+                Log.d("/////////", "Thread End");
+                try {
+                    Thread.sleep(1000);
                     runOnUiThread(new Runnable() {
                         @Override
-                        public void run(){
-                            //tv_currentAsset.setText(Asset);
-                            tv_currentAsset2.setText(Asset2);}
+                        public void run() {
+                            rvCoin.setLayoutManager(coinManager);
+                            rvCoin.setAdapter(coinAdapter);
+                        }
                     });
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-
-                Log.d("/////////","Thread End");
-
-            } catch (Exception e) {
-
-                e.printStackTrace();
             }
-            try {
-                Thread.sleep(1000);
-
-            } catch (InterruptedException e) {
-            }
-            handler.post(this);
         }
     }
-
-
 }
