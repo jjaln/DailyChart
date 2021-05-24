@@ -3,6 +3,7 @@ package com.jjaln.dailychart.contents;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,16 +14,16 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.jjaln.dailychart.R;
-import com.jjaln.dailychart.feature.News;
-import com.jjaln.dailychart.adapter.NewsListAdapter;
-import com.jjaln.dailychart.wallet.Api_Client;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.jjaln.dailychart.R;
+import com.jjaln.dailychart.adapter.NewsListAdapter;
+import com.jjaln.dailychart.feature.News;
+import com.jjaln.dailychart.wallet.Api_Client;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -104,8 +105,8 @@ public class CoinInfo extends AppCompatActivity {
             }
         });
 
-        //NetworkThread thread = new NetworkThread();
-        //thread.start();
+        NetworkThread thread = new NetworkThread();
+        thread.start();
     }
 
 
@@ -185,6 +186,7 @@ public class CoinInfo extends AppCompatActivity {
                         }
 
                     } catch (Exception e) {
+                        Log.d("/////////", "DataGetError");
 //                        e.printStackTrace();
                     }
                 }

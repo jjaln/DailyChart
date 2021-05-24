@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -89,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
         Log.d("/////////","oncreate start");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (android.os.Build.VERSION.SDK_INT > 9) { StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build(); StrictMode.setThreadPolicy(policy); }
+
 
         Intent intent = getIntent();
         InitData = (ArrayList<Coin>)intent.getSerializableExtra("init");
@@ -174,12 +177,13 @@ public class MainActivity extends AppCompatActivity {
             nv.getMenu().findItem(R.id.login).setVisible(false);
             nv.getMenu().findItem(R.id.dashboard).setVisible(true);
         }
-        BithumbThread thread1 = new BithumbThread();
-        UpbitThread thread2 = new UpbitThread();
-        handler.post(thread1);
-        handler.post(thread2);
-        thread1.start();
-        thread2.start();
+        NetworkThread thread = new NetworkThread();
+
+        handler.post(thread);
+
+        thread.start();
+
+
 
         Log.d("/////////","OnResume End");
     }
@@ -243,15 +247,15 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    class BithumbThread extends Thread {
+    class NetworkThread extends Thread {
 
 
         @Override
         public void run() {
             try {
                 int a = 0;
-                Api_Client api = new Api_Client("a10c1f984334fb14c30ebaf3e60ce998",
-                        "32fe2aae6de50ec84b0ed4cf6093a95b");
+                Api_Client api = new Api_Client("10c5e543905bee33d2c2d0f9c5fa2074",
+                        "15c43069ef37eeff750d1f7255d31d11");
                 HashMap<String, String> rgParams = new HashMap<String, String>();
                 rgParams.put("currency", "ALL");
 
@@ -293,9 +297,9 @@ public class MainActivity extends AppCompatActivity {
                             (Float.parseFloat(xcoin_last_xrp) * Float.parseFloat(total_xrp)) +
                             (Float.parseFloat(xcoin_last_ada) * Float.parseFloat(total_ada)) +
                             (Float.parseFloat(xcoin_last_dot) * Float.parseFloat(total_dot));
+                String Asset = "Bithumb : " + form.format(balance);
 
-                    String Asset = "Bithumb : " + form.format(balance);
-                    tv_currentAsset.setText(Asset);
+
 
 
 
@@ -320,27 +324,6 @@ public class MainActivity extends AppCompatActivity {
 //                    Log.d("//////////", closing_price + " / " + fluctate_24H);
                     
                 }
-
-                Log.d("/////////","Thread End");
-            } catch (Exception e) {
-
-                Log.d("/////////", "DataGetError");
-            }
-            try {
-                Thread.sleep(1000);
-
-            } catch (InterruptedException e) {
-            }
-            handler.post(this);
-        }
-    }
-
-    class UpbitThread extends Thread {
-
-        @Override
-        public void run() {
-            try {
-
 
                 String accessKey = ("fRRqee9krxSvxTQsX9dTpirPgY7RqzoUKyPeAdUM");
                 String secretKey = ("nZT3FrtV95j1U2QwqIeIflI5pMDN5VfS0MwYY9xT");
@@ -376,15 +359,19 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     String Asset2 = "Upbit : " + form.format(balance_total);
-                    tv_currentAsset2.setText(Asset2);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run(){
+                            //tv_currentAsset.setText(Asset);
+                            tv_currentAsset2.setText(Asset2);}
+                    });
                 }
 
+                Log.d("/////////","Thread End");
 
-
-                //Log.d("/////////","Thread End");
             } catch (Exception e) {
 
-                //Log.d("/////////", "DataGetError");
+                e.printStackTrace();
             }
             try {
                 Thread.sleep(1000);
@@ -394,4 +381,6 @@ public class MainActivity extends AppCompatActivity {
             handler.post(this);
         }
     }
+
+
 }
