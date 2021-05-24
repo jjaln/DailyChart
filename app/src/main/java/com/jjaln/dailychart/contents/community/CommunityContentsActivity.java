@@ -96,7 +96,7 @@ public class CommunityContentsActivity extends AppCompatActivity {
 
         ivSendReply.setOnClickListener(v -> {
             if(token.equals(""))
-                Toast.makeText(mContext,"Login needs",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext,"로그인이 필요합니다.",Toast.LENGTH_SHORT).show();
             else {
                 Reply reply = new Reply();
                 reply.setContent(et_reply.getText().toString());
