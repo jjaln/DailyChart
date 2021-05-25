@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView rvCoin, rvExchange;
     private SharedPreferences pref;
     private String token;
-    private ArrayList<Coin> CoinData, InitData;
+    private ArrayList<Coin> CoinData;
     private FirebaseUser user;
     private RoundedImageView rivUser;
     private static final String TAG = "MainActivity";
@@ -98,8 +98,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        Intent intent = getIntent();
-        InitData = (ArrayList<Coin>) intent.getSerializableExtra("init");
         toolbarNomad = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbarNomad);
 
@@ -133,9 +131,6 @@ public class MainActivity extends AppCompatActivity {
         rvExchange.setAdapter(new ExchangeAdapter(ExchangeData));
 
         rvCoin = findViewById(R.id.rv_CoinList);
-        coinAdapter = new CoinListAdapter(InitData, mContext);
-        rvCoin.setLayoutManager(coinManager);
-        rvCoin.setAdapter(coinAdapter);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
