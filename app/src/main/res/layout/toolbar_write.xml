@@ -4,20 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/toolbar_serve"
     android:layout_width="match_parent"
-    android:layout_height="65dp"
+    android:layout_height="70dp"
     app:contentInsetStart="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingRight="20dp"
-        android:paddingLeft="20dp">
+        android:layout_height="match_parent">
 
 
         <ImageView
             android:id="@+id/iv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -27,7 +26,7 @@
             android:id="@+id/tv_toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="10dp"
             android:textColor="@android:color/black"
             android:text="게시글 작성"
             android:textSize="25dp"
@@ -39,11 +38,18 @@
             android:id="@+id/btn_save_community"
             android:layout_width="60dp"
             android:layout_height="35dp"
+            android:layout_marginRight="20dp"
             android:text="등록"
             android:textColor="@color/white"
             android:background="@drawable/btn_round2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <View android:layout_width="match_parent"
+            android:layout_height="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/toolbar_dropshadow"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.appcompat.widget.Toolbar>
