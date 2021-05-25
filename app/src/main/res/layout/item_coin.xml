@@ -69,15 +69,5 @@
             android:gravity="right"
             android:textSize="20sp" />
     </RelativeLayout>
-    <com.jjoe64.graphview.GraphView
-        android:id="@+id/graph"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@drawable/round_rectangle"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textSize="36sp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="50dp" />
+
 </LinearLayout>
