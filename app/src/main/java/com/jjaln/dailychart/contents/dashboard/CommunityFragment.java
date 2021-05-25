@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.jjaln.dailychart.R;
 import com.jjaln.dailychart.adapter.CommunityAdapter;
+import com.jjaln.dailychart.adapter.CommunityListAdapter;
 import com.jjaln.dailychart.contents.community.CommunityActivity;
 import com.jjaln.dailychart.feature.Community_Data;
 
@@ -42,7 +44,7 @@ public class CommunityFragment extends Fragment {
     private SharedPreferences pref;
     private Context mContext;
     private String token;
-    private CommunityAdapter communityAdapter;
+    private CommunityListAdapter communityListAdapter;
     private List<Community_Data> community;
     private DatabaseReference mDatabase;
     private AppCompatButton btnFindOne;
@@ -72,6 +74,7 @@ public class CommunityFragment extends Fragment {
 
         layoutNoList = view.findViewById(R.id.layout_no_list);
         SearchContents();
+
         return view;
     }
     public void SearchContents() {
@@ -85,10 +88,10 @@ public class CommunityFragment extends Fragment {
                         layoutNoList.setVisibility(View.INVISIBLE);
                         layoutNoList.setLayoutParams(new LinearLayout.LayoutParams(0,0));
                         community.add(0, data);
-                        communityAdapter = new CommunityAdapter(community, mContext, token);
+                        communityListAdapter = new CommunityListAdapter(community, mContext, token);
                     }
                 }
-                rvMyPost.setAdapter(communityAdapter);
+                rvMyPost.setAdapter(communityListAdapter);
                 rvMyPost.setLayoutManager(manager);
             }
             @Override

@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CommunityWriteActivity extends AppCompatActivity {
@@ -80,6 +81,7 @@ public class CommunityWriteActivity extends AppCompatActivity {
                     question.setCategoryId(category.indexOf(question.getCategoryName()));
                     question.setUsername(username);
                     question.setDBKey(mDatabase.child(autoCompleteTextView.getText().toString()).push().getKey());
+                    question.setDate(new Date());
                     mDatabase.child("Post").
                             child(autoCompleteTextView.getText().toString()).
                             child(question.getDBKey()).setValue(question);

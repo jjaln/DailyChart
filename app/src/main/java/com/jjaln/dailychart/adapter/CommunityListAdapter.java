@@ -13,9 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jjaln.dailychart.MainActivity;
 import com.jjaln.dailychart.R;
+import com.jjaln.dailychart.contents.community.CommunityContentsActivity;
 import com.jjaln.dailychart.feature.Community_Data;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class CommunityListAdapter extends RecyclerView.Adapter<CommunityListAdapter.CommunityViewHolder>{
     private List<Community_Data> communities;
@@ -48,20 +51,23 @@ public class CommunityListAdapter extends RecyclerView.Adapter<CommunityListAdap
 
     public class CommunityViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView tvCommunityTitle,tvCommunityCategory, tvUsername;
+        private TextView tvCommunityTitle,tvCommunityCategory, tvUsername, tvCommunityDate, in;
         private AppCompatButton btnLike;
 
         public CommunityViewHolder(@NonNull View itemView) {
             super(itemView);
+            in = itemView.findViewById(R.id.textView2);
             tvCommunityTitle = itemView.findViewById(R.id.tv_community_title);
             tvCommunityCategory = itemView.findViewById(R.id.tv_community_category);
             tvUsername = itemView.findViewById(R.id.tv_username);
+            tvCommunityDate = itemView.findViewById(R.id.tv_community_date);
 
             itemView.setOnClickListener(v->{
                 int pos = getAdapterPosition();
-                Intent intent = new Intent(mContext, MainActivity.class);
+                Intent intent = new Intent(mContext, CommunityContentsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent.putExtra("community",communities.get(pos));
+                intent.putExtra("pos",pos);
                 mContext.startActivity(intent);
             });
         }
@@ -70,6 +76,11 @@ public class CommunityListAdapter extends RecyclerView.Adapter<CommunityListAdap
             tvCommunityTitle.setText(community.getTitle());
             tvCommunityCategory.setText(community.getCategoryName());
             tvUsername.setText(community.getUsername());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd HH:mm", Locale.KOREA);
+            tvCommunityDate.setText(simpleDateFormat.format(community.getDate()));
+
+            tvCommunityCategory.setVisibility(View.VISIBLE);
+            in.setVisibility(View.VISIBLE);
         }
     }
 }

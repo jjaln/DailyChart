@@ -1,5 +1,7 @@
 package com.jjaln.dailychart.feature;
 
+import java.util.Date;
+
 import lombok.Data;
 
 @Data
@@ -11,4 +13,5 @@ public class Question {
     private int categoryId;
     private String username;
     private String DBKey;
+    private Date date;
 }

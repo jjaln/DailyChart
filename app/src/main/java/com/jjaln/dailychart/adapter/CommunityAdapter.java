@@ -14,7 +14,9 @@ import com.jjaln.dailychart.R;
 import com.jjaln.dailychart.contents.community.CommunityContentsActivity;
 import com.jjaln.dailychart.feature.Community_Data;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.CommunityViewHolder>{
     private List<Community_Data> communities;
@@ -47,13 +49,15 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Comm
 
     public class CommunityViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView tvCommunityTitle,tvCommunityCategory, tvUsername;
+        private TextView tvCommunityTitle,tvCommunityCategory, tvUsername, tvCommunityDate, in;
 
         public CommunityViewHolder(@NonNull View itemView) {
                 super(itemView);
+                in = itemView.findViewById(R.id.textView2);
                 tvCommunityTitle = itemView.findViewById(R.id.tv_community_title);
                 tvCommunityCategory = itemView.findViewById(R.id.tv_community_category);
                 tvUsername = itemView.findViewById(R.id.tv_username);
+                tvCommunityDate = itemView.findViewById(R.id.tv_community_date);
                 //상세
                 itemView.setOnClickListener(v->{
                     int pos = getAdapterPosition();
@@ -65,10 +69,16 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Comm
                 });
             }
 
-            public void setCommunityItem(Community_Data community){
-                tvCommunityTitle.setText(community.getTitle());
-                tvCommunityCategory.setText(community.getCategoryName());
-                tvUsername.setText(community.getUsername());
+        public void setCommunityItem(Community_Data community){
+
+            tvCommunityTitle.setText(community.getTitle());
+            tvCommunityCategory.setText(community.getCategoryName());
+            tvUsername.setText(community.getUsername());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd HH:mm", Locale.KOREA);
+            tvCommunityDate.setText(simpleDateFormat.format(community.getDate()));
+
+            in.setVisibility(View.GONE);
+            tvCommunityCategory.setVisibility((View.GONE));
         }
     }
 }

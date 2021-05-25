@@ -23,7 +23,9 @@ import com.jjaln.dailychart.feature.Community_Data;
 import com.jjaln.dailychart.feature.Contents;
 import com.jjaln.dailychart.feature.Reply;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -92,13 +94,14 @@ public class CommunityContentAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public class DetailContentViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvDetailTitle, tvDetailUsername, tvDetailCategory, tvDetailContents;
+        private TextView tvDetailTitle, tvDetailUsername, tvDetailCategory, tvDetailDate, tvDetailContents;
 
         public DetailContentViewHolder(@NonNull View itemView) {
             super(itemView);
             tvDetailTitle = itemView.findViewById(R.id.tv_detail_title);
             tvDetailUsername = itemView.findViewById(R.id.tv_detail_username);
             tvDetailCategory = itemView.findViewById(R.id.tv_detail_category);
+            tvDetailDate = itemView.findViewById(R.id.tv_detail_date);
             tvDetailContents = itemView.findViewById(R.id.tv_detail_content);
 
         }
@@ -108,6 +111,8 @@ public class CommunityContentAdapter extends RecyclerView.Adapter<RecyclerView.V
             tvDetailContents.setText(community.getContent());
             tvDetailUsername.setText(community.getUsername());
             tvDetailCategory.setText(community.getCategoryName());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy/MM/dd HH:mm", Locale.KOREA);
+            tvDetailDate.setText(simpleDateFormat.format(community.getDate()));
         }
     }
 

@@ -48,8 +48,18 @@
                         android:id="@+id/tv_detail_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="vector3"
+                        android:text="user_name"
                         android:textColor="#6b7280"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_detail_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text="20-20-20 20:20"
+                        android:textColor="#806B7280"
                         android:textStyle="bold" />
 
                 </LinearLayout>
