@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class Coin implements Serializable {
-
     private int coin_img;
     private String coin_name;
+    private String coin_type;
     private String market_price;
     private String flucate_rate;
     private String flucate_price;

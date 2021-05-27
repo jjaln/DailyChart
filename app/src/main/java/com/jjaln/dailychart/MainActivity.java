@@ -65,12 +65,12 @@ public class MainActivity extends AppCompatActivity {
     private Context mContext = MainActivity.this;
 
     private Toolbar toolbarNomad;
-    private ImageView ivMenu;
+    private ImageView ivMenu, ivApi;
     private DrawerLayout drawer;
     private NavigationView nv;
     private CoinListAdapter coinAdapter;
     private LinearLayoutManager coinManager;
-    private TextView tv_currentAsset, tv_currentAsset2, tv_scroll;
+    private TextView tv_currentAsset, tv_currentAsset2;
     private RecyclerView rvCoin, rvExchange;
     private SharedPreferences pref;
     private String token;
@@ -78,11 +78,11 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser user;
     private RoundedImageView rivUser;
     private static final String TAG = "MainActivity";
-    private Button apibutton;
     String bithumb_access;
     String bithumb_secret;
     String upbit_access;
     String upbit_secret;
+    NetworkThread thread;
     Handler handler = new Handler();
     DecimalFormat form = new DecimalFormat("#.####");
 
@@ -91,11 +91,11 @@ public class MainActivity extends AppCompatActivity {
         Log.d("/////////", "oncreate start");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-
 
         toolbarNomad = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbarNomad);
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         ivMenu = findViewById(R.id.iv_back);
         tv_currentAsset = findViewById(R.id.tv_currentAsset);
         tv_currentAsset2 = findViewById(R.id.tv_currentAsset2);
-        tv_scroll = findViewById(R.id.tv_scroll);
+        ivApi = findViewById(R.id.apibutton);
         drawer = findViewById(R.id.drawer);
         rivUser = (RoundedImageView) findViewById(R.id.riv_user);
 
@@ -111,6 +111,11 @@ public class MainActivity extends AppCompatActivity {
             drawer.openDrawer(Gravity.LEFT);
         });
 
+        ivApi.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), APIActivity.class);
+            thread.interrupt();
+            startActivityForResult(intent, 1);
+        });
 
         LayoutInflater mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         mInflater.inflate(R.layout.navigation, drawer, true);
@@ -131,20 +136,8 @@ public class MainActivity extends AppCompatActivity {
 
         rvCoin = findViewById(R.id.rv_CoinList);
         Log.d("/////////", "oncreate End");
-
-        apibutton = findViewById(R.id.apibutton);
-        apibutton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), APIActivity.class);
-                startActivityForResult(intent, 1);
-
-
-            }
-        });
-
-
+        thread = new NetworkThread();
+        thread.start();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -161,13 +154,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        coinManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+        rvCoin.setLayoutManager(coinManager);
         pref = getSharedPreferences("pref", MODE_PRIVATE);
         token = pref.getString("token", "");
         appbarRight();
-        NetworkThread thread = new NetworkThread();
-
-            thread.start();
-
         Log.d("/////////", "OnResume End");
     }
 
@@ -191,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
         rivUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                thread.interrupt();
                 Intent intent = new Intent(v.getContext(), UserDashBoardActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
@@ -209,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             while (true) {
 
-                if(bithumb_access != null && bithumb_secret != null) {
+                if (bithumb_access != null && bithumb_secret != null) {
                     Api_Client api = new Api_Client("" + "a10c1f984334fb14c30ebaf3e60ce998",
                             "" + "32fe2aae6de50ec84b0ed4cf6093a95b"
                     );
@@ -264,11 +256,10 @@ public class MainActivity extends AppCompatActivity {
                     });
                 }
 
-                if(upbit_access != null && upbit_secret != null){
+                if (upbit_access != null && upbit_secret != null) {
                     String accessKey = (upbit_access);
                     String secretKey = (upbit_secret);
                     String serverUrl = ("https://api.upbit.com");
-
 
                     Algorithm algorithm = Algorithm.HMAC256(secretKey);
                     String jwtToken = JWT.create()
@@ -284,7 +275,6 @@ public class MainActivity extends AppCompatActivity {
 
                     HttpResponse response = client.execute(request);
                     HttpEntity entity = response.getEntity();
-
 
                     double balance_total = 0.0;
                     JsonParser jsonParser = new JsonParser();
@@ -309,31 +299,30 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                Api_Client api = new Api_Client(""+bithumb_access,
-                        ""+bithumb_secret);
+                Api_Client api = new Api_Client("" + bithumb_access,
+                        "" + bithumb_secret);
                 HashMap<String, String> rgParams = new HashMap<String, String>();
                 rgParams.put("currency", "ALL");
-                String[] coin_list = {"BTC", "ETH", "XRP", "ADA", "DOT"};
-                ArrayList<String> coins = new ArrayList<>(Arrays.asList(coin_list));
+                String[] coin_type = {"BTC", "ETH", "XRP", "ADA", "DOT"};
+                String[] coin_names = {"Bitcoin","Ethereum","Ripple","ADA","Polkadot"};
+                ArrayList<String> coins = new ArrayList<>(Arrays.asList(coin_type));
                 int[] coin_img = {R.mipmap.btc, R.mipmap.eth, R.mipmap.xrp, R.mipmap.ada, R.mipmap.dot};
 
                 CoinData = new ArrayList<>();
-                for (String coin : coin_list) {
-                    final String res = api.callApi("/public/ticker/" + coin + "/KRW", rgParams);
+                coinAdapter = new CoinListAdapter(CoinData, mContext);
+                for (String type : coin_type) {
+                    final String res = api.callApi("/public/ticker/" + type + "/KRW", rgParams);
                     JSONObject object = new JSONObject(res);
                     JSONObject dt_list = object.getJSONObject("data");
-                    int c_img = coin_img[coins.indexOf(coin)];
+                    int c_img = coin_img[coins.indexOf(type)];
+                    String coin_name = coin_names[coins.indexOf(type)];
                     String closing_price = dt_list.getString("closing_price");
                     String fluctate_24H = dt_list.getString("fluctate_24H");
                     String fluctate_rate_24H = dt_list.getString("fluctate_rate_24H");
-                    CoinData.add(new Coin(c_img, coin, closing_price, fluctate_rate_24H, fluctate_24H));
-                    coinAdapter = new CoinListAdapter(CoinData, mContext);
-                    coinManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+                    CoinData.add(new Coin(c_img,coin_name, type, closing_price, fluctate_rate_24H, fluctate_24H));
 //                    Log.d("//////////", closing_price + " / " + fluctate_24H);
                 }
-//
-
-
+                coinAdapter = new CoinListAdapter(CoinData, mContext);
                 Log.d("/////////", "Thread End");
                 try {
                     Thread.sleep(1000);
@@ -341,7 +330,6 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void run() {
 
-                            rvCoin.setLayoutManager(coinManager);
                             rvCoin.setAdapter(coinAdapter);
                         }
                     });

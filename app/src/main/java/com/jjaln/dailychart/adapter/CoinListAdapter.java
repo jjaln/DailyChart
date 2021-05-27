@@ -67,12 +67,13 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.Coin_L
     }
     public class Coin_List_ViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView tvCoinName,tvCoinPrice,tvFlucPrice,tvFlucRate;
+        private TextView tvCoinName,tvCoinPrice,tvFlucPrice,tvFlucRate,tvCoinType;
         private RoundedImageView rivCoinImage;
 
         public Coin_List_ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvCoinName = itemView.findViewById(R.id.coin_name);
+            tvCoinType = itemView.findViewById(R.id.coin_type);
             tvCoinPrice = itemView.findViewById(R.id.market_price);
             tvFlucPrice = itemView.findViewById(R.id.fluctate_price);
             tvFlucRate = itemView.findViewById(R.id.fluctate_rate);
@@ -90,6 +91,7 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.Coin_L
 
         public void setCoinListItem(Coin coins){
             tvCoinName.setText(coins.getCoin_name());
+            tvCoinType.setText(coins.getCoin_type());
             tvCoinPrice.setText(getFormat(coins.getMarket_price()));
             tvFlucPrice.setText(getFormat(coins.getFlucate_price()));
             tvFlucRate.setText(getFormat(coins.getFlucate_rate()));
