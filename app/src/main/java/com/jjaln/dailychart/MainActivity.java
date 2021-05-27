@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
     private Context mContext = MainActivity.this;
 
     private Toolbar toolbarNomad;
-    private GoogleSignInClient googleSignInClient;
     private ImageView ivMenu;
     private DrawerLayout drawer;
     private NavigationView nv;
@@ -111,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         ivMenu.setOnClickListener(v -> {
             drawer.openDrawer(Gravity.LEFT);
         });
-        coinManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+
 
         LayoutInflater mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         mInflater.inflate(R.layout.navigation, drawer, true);
@@ -131,12 +130,6 @@ public class MainActivity extends AppCompatActivity {
         rvExchange.setAdapter(new ExchangeAdapter(ExchangeData));
 
         rvCoin = findViewById(R.id.rv_CoinList);
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        googleSignInClient = GoogleSignIn.getClient(this, gso);
         Log.d("/////////", "oncreate End");
 
         apibutton = findViewById(R.id.apibutton);
@@ -157,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
         Bundle bundle = data.getBundleExtra("apikey");
         bithumb_access = bundle.getString("bit_acc");
         bithumb_secret = bundle.getString("bit_sec");
@@ -171,13 +163,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         pref = getSharedPreferences("pref", MODE_PRIVATE);
         token = pref.getString("token", "");
-        if (token.equals("")) {
-            nv.getMenu().findItem(R.id.login).setVisible(true);
-            nv.getMenu().findItem(R.id.dashboard).setVisible(false);
-        } else {
-            nv.getMenu().findItem(R.id.login).setVisible(false);
-            nv.getMenu().findItem(R.id.dashboard).setVisible(true);
-        }
+        appbarRight();
         NetworkThread thread = new NetworkThread();
 
             thread.start();
@@ -205,34 +191,9 @@ public class MainActivity extends AppCompatActivity {
         rivUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu p = new PopupMenu(
-                        getApplicationContext(),//화면제어권자
-                        v);             //팝업을 띄울 기준이될 위젯
-                getMenuInflater().inflate(R.menu.user_menu, p.getMenu());
-                //이벤트 처리
-                p.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getTitle().equals("Dashboard")) {
-                            Intent intent = new Intent(v.getContext(), UserDashBoardActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                            v.getContext().startActivity(intent);
-                        } else {
-                            SharedPreferences.Editor editor = pref.edit();
-                            editor.putString("token", "");
-                            editor.putString("username", "");
-                            editor.commit();
-                            FirebaseAuth.getInstance().signOut();
-                            googleSignInClient.signOut();
-                            Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(v.getContext(), MainActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                            v.getContext().startActivity(intent);
-                        }
-                        return false;
-                    }
-                });
-                p.show();
+                Intent intent = new Intent(v.getContext(), UserDashBoardActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
             }
         });
     }
@@ -367,6 +328,7 @@ public class MainActivity extends AppCompatActivity {
                     String fluctate_rate_24H = dt_list.getString("fluctate_rate_24H");
                     CoinData.add(new Coin(c_img, coin, closing_price, fluctate_rate_24H, fluctate_24H));
                     coinAdapter = new CoinListAdapter(CoinData, mContext);
+                    coinManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
 //                    Log.d("//////////", closing_price + " / " + fluctate_24H);
                 }
 //
@@ -378,6 +340,7 @@ public class MainActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+
                             rvCoin.setLayoutManager(coinManager);
                             rvCoin.setAdapter(coinAdapter);
                         }

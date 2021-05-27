@@ -85,8 +85,7 @@ public class CommunityFragment extends Fragment {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Community_Data data = dataSnapshot.getValue(Community_Data.class);
                     if (data.getToken().equals(token)) {
-                        layoutNoList.setVisibility(View.INVISIBLE);
-                        layoutNoList.setLayoutParams(new LinearLayout.LayoutParams(0,0));
+                        layoutNoList.setVisibility(View.GONE);
                         community.add(0, data);
                         communityListAdapter = new CommunityListAdapter(community, mContext, token);
                     }

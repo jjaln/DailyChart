@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.jjaln.dailychart.MainActivity;
 import com.jjaln.dailychart.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -32,9 +33,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private ImageView ivBack;
-    private TextView tvToolbarTitle;
-
     private SignInButton btnGoogleLogin;
     private final int RC_SIGN_IN = 123;
     private FirebaseAuth mAuth;
@@ -51,16 +49,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ivBack = findViewById(R.id.iv_back);
         mContext = this;
-        tvToolbarTitle = findViewById(R.id.tv_toolbar_title);
-        tvToolbarTitle.setText("Login");
 
         signInButton = findViewById(R.id.sign_in_button);
-
-        ivBack.setOnClickListener(v -> {
-            finish();
-        });
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -71,9 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         SignInButton signInButton = findViewById(R.id.sign_in_button);
-        signInButton.setOnClickListener((view) -> {
-            onClick(view);
-        });
+        signInButton.setOnClickListener(this::onClick);
     }
 
     public void onClick(View v) {
@@ -117,6 +106,8 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putString("token", id);
                                 editor.putString("username", user.getDisplayName());
                                 editor.commit();
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
                                 finish();
                                 Toast.makeText(getApplicationContext(), "Complete", Toast.LENGTH_LONG).show();
                             } else {
