@@ -2,6 +2,7 @@ package com.jjaln.dailychart.contents;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -25,6 +26,7 @@ import com.jjaln.dailychart.adapter.NewsListAdapter;
 import com.jjaln.dailychart.feature.News;
 import com.jjaln.dailychart.wallet.Api_Client;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -52,7 +54,7 @@ public class CoinInfo extends AppCompatActivity {
     public GraphView graph;
     DataPoint[] pricePoints;
     LineGraphSeries series;
-    int cnt = 20;
+    int cnt = 30;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +69,9 @@ public class CoinInfo extends AppCompatActivity {
         ivBack.setOnClickListener(v -> {
             finish();
         });
-
+        graph.getGridLabelRenderer().setGridStyle( GridLabelRenderer.GridStyle.NONE );
+        graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
+        graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
         Intent intent = getIntent();
         coin_name = intent.getExtras().getString("coin_name");
         coin_img = intent.getExtras().getInt("coin_img");
@@ -126,6 +130,8 @@ public class CoinInfo extends AppCompatActivity {
         // 데이터가 늘어날때 y축의 scroll 이 생겨지도록 설정
         graph.getViewport().setScrollableY(true);
 
+        series.setBackgroundColor(Color.parseColor("#4D87cefa"));
+        series.setDrawBackground(true);
     }
 
     public void addEntry(int x) {
@@ -145,7 +151,7 @@ public class CoinInfo extends AppCompatActivity {
             while (true) {
                 if (isFirst == 1) {
                     try {
-                        rgParams.put("count", "20");
+                        rgParams.put("count", "30");
 
                         //bithumb 거래소 거래 체결 완료 내역 요청하기
                         String result = api.callApi("/public/transaction_history/" + coin_name + "/KRW", rgParams);
@@ -166,7 +172,7 @@ public class CoinInfo extends AppCompatActivity {
                     isFirst = 0;
                 } else {
                     try {
-                        rgParams.put("count", "1");
+                        rgParams.put("count", "2");
                         String result = api.callApi("/public/transaction_history/" + coin_name + "/KRW", rgParams);
                         JSONObject obj = new JSONObject(result);
                         String status = obj.getString("status");
