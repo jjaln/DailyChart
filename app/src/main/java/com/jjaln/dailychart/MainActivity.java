@@ -183,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
         rivUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                thread.interrupt();
                 Intent intent = new Intent(v.getContext(), UserDashBoardActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
