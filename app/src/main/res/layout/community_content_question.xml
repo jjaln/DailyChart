@@ -49,7 +49,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="user_name"
-                        android:textColor="#6b7280"
                         android:textStyle="bold" />
 
                     <TextView
@@ -59,7 +58,6 @@
                         android:layout_weight="1"
                         android:gravity="end"
                         android:text="20-20-20 20:20"
-                        android:textColor="#806B7280"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -70,7 +68,7 @@
                     android:layout_marginTop="5dp"
                     android:text="존버는 승리한다"
                     android:textStyle="bold"
-                    android:textColor="#111827"
+                    android:textColor="?attr/textColor_1"
                     android:textSize="18dp" />
 
 
@@ -82,9 +80,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="15dp"
-                android:textColor="#111827"
-                android:layout_marginVertical="10dp"
+                android:textColor="?attr/textColor_1"
                 android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
                 android:text="sample body"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

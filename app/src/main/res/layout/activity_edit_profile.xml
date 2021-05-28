@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F9FAFB"
     android:orientation="vertical"
     tools:context=".contents.dashboard.EditProfileActivity">
 
@@ -27,7 +26,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="25dp"
                 android:text="Account Information"
-                android:textColor="@color/black"
+                android:textColor="?attr/textColor_1"
                 android:textSize="20dp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,7 +46,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="10dp"
                     android:text="Name"
-                    android:textColor="#374151"
+                    android:textColor="?attr/textColor_2"
                     android:textSize="17dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -80,7 +79,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="10dp"
                     android:text="NickName"
-                    android:textColor="#374151"
+                    android:textColor="?attr/textColor_2"
                     android:textSize="17dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

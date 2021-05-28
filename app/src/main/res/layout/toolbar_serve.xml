@@ -5,8 +5,7 @@
     android:id="@+id/toolbar_serve"
     android:layout_width="match_parent"
     android:layout_height="65dp"
-    app:contentInsetStart="0dp"
-    android:background="#FFFFFF">
+    app:contentInsetStart="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -31,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:text="Courses"
-            android:textColor="@android:color/black"
+            android:textColor="?attr/textColor_1"
             android:textSize="25dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_back"

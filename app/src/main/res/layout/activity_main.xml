@@ -16,7 +16,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -35,14 +34,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="My Account"
-                        android:textColor="@color/black" />
+                        android:textColor="?attr/textColor_2" />
                     <TextView
                         android:id="@+id/tv_currentAsset"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Bithumb : 0000000"
-                        android:textColor="@color/black"
+                        android:text="Bithumb : 계정 키를 불러와주세요."
+                        android:textColor="?attr/textColor_1"
                         android:textSize="20sp" />
 
                     <TextView
@@ -50,8 +49,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Upbit : 0000000"
-                        android:textColor="@color/black"
+                        android:text="Upbit : 계정 키를 불러와주세요."
+                        android:textColor="?attr/textColor_1"
                         android:textSize="20sp" />
                 </LinearLayout>
 

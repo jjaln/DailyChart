@@ -43,7 +43,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="username"
-                        android:textColor="#111827"
+                        android:textColor="?attr/textColor_2"
                         android:textSize="15dp" />
                 </LinearLayout>
 
@@ -66,7 +66,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="10dp"
                 android:text="English test 한글 테스트 @@@@@@@@@@@@@@@@@@@@@@@@@@"
-                android:textColor="#111827"
+                android:textColor="?attr/textColor_1"
                 android:textSize="17dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

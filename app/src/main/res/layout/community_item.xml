@@ -6,16 +6,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal">
-
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:layout_marginHorizontal="10dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/corner_round"
-        android:elevation="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:padding="15dp">
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="10dp">
 
 
         <TextView
@@ -24,9 +26,9 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textColor="?attr/textColor_1"
             android:layout_marginLeft="15dp"
-            android:text="ttttttttt"
+            android:text="Title"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
         <LinearLayout
@@ -39,7 +41,9 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="in" />
+                android:text="in"
+                android:textColor="?attr/textColor_3"
+                />
 
             <TextView
                 android:id="@+id/tv_community_category"
@@ -61,6 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="by"
+                android:textColor="?attr/textColor_3"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_community_category"
                 app:layout_constraintStart_toEndOf="@+id/tv_community_category"
                 app:layout_constraintTop_toTopOf="@+id/tv_community_category" />
@@ -71,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:text="username"
                 android:layout_marginLeft="5dp"
-                android:textColor="#434343"
+                android:textColor="?attr/textColor_2"
                 app:layout_constraintBottom_toBottomOf="@+id/textView7"
                 app:layout_constraintStart_toEndOf="@+id/textView7"
                 app:layout_constraintTop_toTopOf="@+id/textView7" />
@@ -89,4 +94,5 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>

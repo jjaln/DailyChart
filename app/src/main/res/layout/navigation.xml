@@ -10,7 +10,6 @@
         app:menu="@menu/menu"
         android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
         android:layout_gravity="start">
 
     </com.google.android.material.navigation.NavigationView>

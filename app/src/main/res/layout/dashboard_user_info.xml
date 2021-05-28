@@ -9,8 +9,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#f9fafb">
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,7 +56,7 @@
                         android:layout_height="wrap_content"
                         android:text="Name"
                         android:textSize="24dp"
-                        android:textColor="@color/black"/>
+                        android:textColor="?attr/textColor_1"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -68,7 +67,7 @@
                         android:layout_height="wrap_content"
                         android:text="User Name"
                         android:textSize="16dp"
-                        android:textColor="@color/black"/>
+                        android:textColor="?attr/textColor_1"/>
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btn_edit_profile"
@@ -76,8 +75,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/corner_round"
-                        android:textColor="@color/black"
-                        android:text="Edit Profile"
+                        android:textColor="?attr/textColor_1"
+                        android:text="프로필 수정"
                         android:textAllCaps="false"/>
 
                 </LinearLayout>

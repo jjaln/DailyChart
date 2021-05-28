@@ -39,7 +39,7 @@ public class UserDashBoardActivity extends AppCompatActivity {
         pref = getSharedPreferences("pref", MODE_PRIVATE);
 
         tvToolbarTitle = findViewById(R.id.tv_toolbar_title);
-        tvToolbarTitle.setText("DashBoard");
+        tvToolbarTitle.setText("내 정보");
 
         ivBack.setOnClickListener(v -> {
             finish();
@@ -54,14 +54,12 @@ public class UserDashBoardActivity extends AppCompatActivity {
 
         dashboardFragmentAdapter.addFragment(new UserInfoFragment(rivUser));
         dashboardFragmentAdapter.addFragment(new CommunityFragment());
-        dashboardFragmentAdapter.addFragment(new DashBoardFragment3());
 
         vpContainer.setAdapter(dashboardFragmentAdapter);
 
         tabsDashboard.setupWithViewPager(vpContainer);
 
-        tabsDashboard.getTabAt(0).setText("My Profile");
-        tabsDashboard.getTabAt(1).setText("My Post");
-        tabsDashboard.getTabAt(2).setText("My Payment History");
+        tabsDashboard.getTabAt(0).setText("프로필");
+        tabsDashboard.getTabAt(1).setText("작성글");
     }
 }

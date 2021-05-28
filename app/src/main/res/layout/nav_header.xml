@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:gravity="bottom"
     android:padding="20dp"
-    android:background="#EDEDED"
+    android:background="?attr/navHeaderBackground"
     android:layout_height="200dp">
 
     <ImageView
