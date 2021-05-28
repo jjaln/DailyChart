@@ -83,7 +83,7 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.Coin_L
                 int pos = getAdapterPosition();
                 Intent intent = new Intent(mContext, CoinInfo.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                intent.putExtra("coin_name", Coin_List.get(pos).getCoin_name());
+                intent.putExtra("coin_name", Coin_List.get(pos).getCoin_type());
                 intent.putExtra("coin_img",Coin_List.get(pos).getCoin_img());
                 mContext.startActivity(intent);
             });

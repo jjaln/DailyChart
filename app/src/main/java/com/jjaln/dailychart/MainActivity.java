@@ -292,7 +292,6 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-
                                 tv_currentAsset2.setText(Asset2);
                             }
                         });
@@ -329,7 +328,6 @@ public class MainActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-
                             rvCoin.setAdapter(coinAdapter);
                         }
                     });
