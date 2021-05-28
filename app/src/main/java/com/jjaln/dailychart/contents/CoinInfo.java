@@ -55,6 +55,7 @@ public class CoinInfo extends AppCompatActivity {
     DataPoint[] pricePoints;
     LineGraphSeries series;
     int cnt = 30;
+    private TextView current_price, percentage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,6 +187,21 @@ public class CoinInfo extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     addEntry(price);
+                                }
+                            });
+                            final String res2 = api.callApi("/public/ticker/" + coin_name + "/KRW", rgParams);
+                            JSONObject object2 = new JSONObject(res2);
+                            JSONObject dt_list = object2.getJSONObject("data");
+                            String closing_price = dt_list.getString("closing_price");
+                            String fluctate_24H = dt_list.getString("fluctate_24H");
+                            String fluctate_rate_24H = dt_list.getString("fluctate_rate_24H");
+                            current_price = (TextView) findViewById(R.id.price);
+                            percentage = (TextView) findViewById(R.id.percentage);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                current_price.setText(closing_price);
+                                percentage.setText("("+fluctate_rate_24H+")%"+fluctate_24H);
                                 }
                             });
                             sleep(1000);
