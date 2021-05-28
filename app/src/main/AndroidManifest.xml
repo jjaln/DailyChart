@@ -3,6 +3,10 @@
     package="com.jjaln.dailychart">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    // 절전을 사용하지 않는 예외앱 등록
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
 
     <application
         android:allowBackup="true"
@@ -35,6 +39,30 @@
             android:label="@string/app_name"
             android:theme="@style/Theme.SE"/>
         <activity android:name=".APIActivity"/>
+
+        <service
+            android:name=".notification.MyService"
+            android:stopWithTask="false"
+            android:enabled="true"
+            android:exported="true"></service>
+        <service
+            android:name=".notification.ForecdTerminationService"
+            android:stopWithTask="false" />
+        <service
+            android:name=".notification.RestartService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <receiver android:name=".notification.AlarmRecever" />
+        <receiver
+            android:name=".notification.RebootRecever"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <uses-library
             android:name="org.apache.http.legacy"

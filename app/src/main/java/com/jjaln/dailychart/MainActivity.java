@@ -3,8 +3,10 @@ package com.jjaln.dailychart;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.Gravity;
@@ -35,6 +37,7 @@ import com.jjaln.dailychart.adapter.ExchangeAdapter;
 import com.jjaln.dailychart.contents.dashboard.UserDashBoardActivity;
 import com.jjaln.dailychart.feature.Coin;
 import com.jjaln.dailychart.feature.Exchange;
+import com.jjaln.dailychart.notification.MyService;
 import com.jjaln.dailychart.wallet.Api_Client;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -72,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser user;
     private RoundedImageView rivUser;
     private static final String TAG = "MainActivity";
+    private  Intent serviceIntent;
     String bithumb_access;
     String bithumb_secret;
     String upbit_access;
@@ -132,6 +136,43 @@ public class MainActivity extends AppCompatActivity {
         Log.d("/////////", "oncreate End");
         thread = new NetworkThread();
         thread.start();
+
+
+        // 절전모드 해제 권한
+        PowerManager pm = (PowerManager) getApplicationContext().getSystemService(POWER_SERVICE);
+        boolean isWhiteListing = false;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            isWhiteListing = pm.isIgnoringBatteryOptimizations(getApplicationContext().getPackageName());
+        }
+        if (!isWhiteListing) {
+            Intent pmintent = new Intent();
+            pmintent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            pmintent.setData(Uri.parse("package:" + getApplicationContext().getPackageName()));
+            startActivity(pmintent);
+        }
+
+        // 앱이 다시 실행되었을 때 충돌 방지
+        if (MyService.serviceIntent == null) {
+            // 백그라운드 쓰레드 실행
+            Log.d("background thread", "start");
+            Intent service_intent = new Intent(MainActivity.this, MyService.class);
+            startService(service_intent);
+        }else{
+            serviceIntent = MyService.serviceIntent;//getInstance().getApplication();
+            //Toast.makeText(getApplicationContext(), "already", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 앱 종료시 서비스(MyService) 종료(stopService)
+        if (serviceIntent!=null) {
+            stopService(serviceIntent);
+            serviceIntent = null;
+        }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
