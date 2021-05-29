@@ -21,6 +21,8 @@
         <item name="textColor_2">#ff888888</item>
         <item name="textColor_3">#ff666666</item>
 
+        <item name="cardview">#ff424242</item>
+
         <item name="navHeaderBackground">#ff222222</item>
     </style>
 </resources>

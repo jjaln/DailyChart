@@ -93,10 +93,10 @@ public class RichEditor extends WebView {
     FONT_COLOR_GREEN(0, 128, 0);
 
 
-
     private int r;
     private int g;
     private int b;
+
 
     Type(int r, int g, int b){
       this.r = r;
@@ -108,6 +108,7 @@ public class RichEditor extends WebView {
       this(-1, -1, -1);
     }
   }
+
 
 
   public interface OnTextChangeListener {
@@ -213,6 +214,7 @@ public class RichEditor extends WebView {
               types.add(type);
           }
         }
+
       }
     }
 
