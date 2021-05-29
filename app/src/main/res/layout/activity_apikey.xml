@@ -9,32 +9,32 @@
     <TextView
         android:id="@+id/info"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="100dp"
         android:textSize="15dp"
         android:gravity="left"
         android:textColor="@color/black"
-        android:text="주의사항 : 키값은 서버에 저장되지 않으나, 자산 보호를 위해 자산 조회 용도로만 키를 발급받으세요." />
+        android:text="주의사항 : 키값은 서버에 저장되지 않으나, 자산 보호를 위해 자산 조회 용도로만 키를 발급받으세요.\n두 마켓의 키값을 모두 넣어주세요" />
     <EditText
         android:id="@+id/bithumb_access"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Bithumb access key"
         />
     <EditText
         android:id="@+id/bithumb_secret"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Bithumb secret key"
         />
     <EditText
         android:id="@+id/upbit_access"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Upbit access key"
         />
     <EditText
         android:id="@+id/upbit_secret"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Upbit secret key"
         />

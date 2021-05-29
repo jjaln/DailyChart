@@ -131,6 +131,9 @@ public class CoinInfo extends AppCompatActivity {
         series = new LineGraphSeries<>(pricePoints);
         // 그래프에 데이터 점들 붙이기
         graph.addSeries(series);
+        graph.getViewport().setMinY(price_list.get(0) - price_list.get(0)*0.002);
+        graph.getViewport().setMaxY(price_list.get(0) + price_list.get(0)*0.002);
+        graph.getViewport().setYAxisBoundsManual(true);
         // x축의 연장 가능성 true
         graph.getViewport().setXAxisBoundsManual(true);
         // 데이터가 늘어날때 x축의 scroll 이 생기도록 설정

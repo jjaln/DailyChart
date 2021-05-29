@@ -181,12 +181,13 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        Bundle bundle = data.getBundleExtra("apikey");
-        bithumb_access = bundle.getString("bit_acc");
-        bithumb_secret = bundle.getString("bit_sec");
-        upbit_access = bundle.getString("up_acc");
-        upbit_secret = bundle.getString("up_sec");
+        if(resultCode != RESULT_CANCELED) {
+            Bundle bundle = data.getBundleExtra("apikey");
+            bithumb_access = bundle.getString("bit_acc");
+            bithumb_secret = bundle.getString("bit_sec");
+            upbit_access = bundle.getString("up_acc");
+            upbit_secret = bundle.getString("up_sec");
+        }
     }
 
 
@@ -197,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         rvCoin.setLayoutManager(coinManager);
         pref = getSharedPreferences("pref", MODE_PRIVATE);
         token = pref.getString("token", "");
-        appbarRight();
+        //appbarRight();
         Log.d("/////////", "OnResume End");
     }
 
