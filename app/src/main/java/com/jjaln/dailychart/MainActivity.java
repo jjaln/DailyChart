@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         rvCoin.setLayoutManager(coinManager);
         pref = getSharedPreferences("pref", MODE_PRIVATE);
         token = pref.getString("token", "");
-        //appbarRight();
+        appbarRight();
         Log.d("/////////", "OnResume End");
     }
 

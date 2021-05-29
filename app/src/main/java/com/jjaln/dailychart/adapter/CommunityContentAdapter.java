@@ -112,6 +112,7 @@ public class CommunityContentAdapter extends RecyclerView.Adapter<RecyclerView.V
         public void setItem(Community_Data community) {
             tvDetailTitle.setText(community.getTitle());
             tvDetailContents.setHtml(community.getContent());
+            tvDetailContents.setInputEnabled(false);
             tvDetailUsername.setText(community.getUsername());
             tvDetailCategory.setText(community.getCategoryName());
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy/MM/dd HH:mm", Locale.KOREA);
