@@ -2,6 +2,7 @@
 <HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:scrollbars="none">
 
     <LinearLayout
@@ -16,6 +17,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="8dp"
+            app:backgroundTint="@null"
             android:background="@drawable/popup_white_button" />
 
         <Button
@@ -23,6 +25,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="8dp"
+            app:backgroundTint="@null"
             android:background="@color/black" />
 
         <Button
@@ -30,6 +33,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="8dp"
+            app:backgroundTint="@null"
             android:background="@color/lime" />
 
         <Button
@@ -37,6 +41,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="8dp"
+            app:backgroundTint="@null"
             android:background="@color/red" />
 
         <Button
@@ -44,6 +49,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="8dp"
+            app:backgroundTint="@null"
             android:background="@color/orange" />
 
         <Button
@@ -51,6 +57,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="8dp"
+            app:backgroundTint="@null"
             android:background="@color/blue" />
 
         <Button
@@ -58,6 +65,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="8dp"
+            app:backgroundTint="@null"
             android:background="@color/green" />
 
         <Button
@@ -65,6 +73,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="8dp"
+            app:backgroundTint="@null"
             android:background="@color/yellow" />
 
         <Button
@@ -72,6 +81,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="8dp"
+            app:backgroundTint="@null"
             android:background="@color/sky_blue" />
 
         <Button
@@ -79,6 +89,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="8dp"
+            app:backgroundTint="@null"
             android:background="@color/pale_cyan" />
 
         <Button
@@ -86,6 +97,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="8dp"
+            app:backgroundTint="@null"
             android:background="@color/pink" />
 
         <Button
@@ -93,6 +105,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="8dp"
+            app:backgroundTint="@null"
             android:background="@color/maroon" />
 
         <Button
@@ -100,12 +113,14 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="8dp"
+            app:backgroundTint="@null"
             android:background="@color/magenta" />
 
         <Button
             android:id="@+id/color_aqua"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            app:backgroundTint="@null"
             android:background="@color/aqua" />
 
     </LinearLayout>
