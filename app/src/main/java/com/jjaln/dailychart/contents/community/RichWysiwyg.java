@@ -123,7 +123,7 @@ public class RichWysiwyg extends LinearLayout {
 
 
     private void init(){
-        inflate(getContext(), R.layout.activity_community_write, this);
+        inflate(getContext(), R.layout.html_text_editor, this);
 
         // Html WebView
         html = findViewById(R.id.HTML);
