@@ -11,4 +11,6 @@
     <string name="cancelButton">취소</string>
     <string name="ImageUpload">이미지 업로드</string>
     <string name="videoUpload">비디오 업로드</string>
+    <string name="NoCommnuity">게시글 작성내역이 없습니다.</string>
+    <string name="NoScrap">뉴스 스크랩 내역이 없습니다.</string>
 </resources>

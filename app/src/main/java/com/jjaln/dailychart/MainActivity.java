@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
         rvCoin.setLayoutManager(coinManager);
         pref = getSharedPreferences("pref", MODE_PRIVATE);
         token = pref.getString("token", "");
-        //appbarRight();
+        UserIcon();
         Log.d("/////////", "OnResume End");
     }
 
@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
 //        isforeground = true;
     }
 
-    private void appbarRight() {
+    private void UserIcon() {
         if (token.equals("")) {
             rivUser.setVisibility(View.INVISIBLE);
         } else {

@@ -54,6 +54,7 @@ public class UserDashBoardActivity extends AppCompatActivity {
 
         dashboardFragmentAdapter.addFragment(new UserInfoFragment(rivUser));
         dashboardFragmentAdapter.addFragment(new CommunityFragment());
+        dashboardFragmentAdapter.addFragment(new ScrapFragment());
 
         vpContainer.setAdapter(dashboardFragmentAdapter);
 
@@ -61,5 +62,6 @@ public class UserDashBoardActivity extends AppCompatActivity {
 
         tabsDashboard.getTabAt(0).setText("프로필");
         tabsDashboard.getTabAt(1).setText("작성글");
+        tabsDashboard.getTabAt(2).setText("스크랩");
     }
 }

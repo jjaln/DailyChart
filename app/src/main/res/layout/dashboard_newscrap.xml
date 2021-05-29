@@ -16,14 +16,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/NoCommnuity"
+            android:text="@string/NoScrap"
             android:textSize="20dp"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_find_one"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Write Post"
+            android:text="Check News"
             android:background="@drawable/corner_round"
             android:textColor="#374151"
             android:textAllCaps="false"
