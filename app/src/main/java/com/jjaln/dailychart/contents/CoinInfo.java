@@ -200,7 +200,7 @@ public class CoinInfo extends AppCompatActivity {
                     isFirst = 0;
                 } else {
                     try {
-                        rgParams.put("count", "2");
+                        rgParams.put("count", "1");
                         String result = api.callApi("/public/transaction_history/" + coin_name + "/KRW", rgParams);
                         JSONObject obj = new JSONObject(result);
                         String status = obj.getString("status");

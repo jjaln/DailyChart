@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         rvCoin.setLayoutManager(coinManager);
         pref = getSharedPreferences("pref", MODE_PRIVATE);
         token = pref.getString("token", "");
-        appbarRight();
+        //appbarRight();
         Log.d("/////////", "OnResume End");
     }
 
@@ -238,11 +238,9 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             while (true) {
 
-
                 if (bithumb_access != null && bithumb_secret != null) {
                     Api_Client api = new Api_Client(""+bithumb_access,
-                            ""+bithumb_secret
-                    );
+                            ""+bithumb_secret);
                     HashMap<String, String> rgParams = new HashMap<String, String>();
                     rgParams.put("currency", "ALL");
 
@@ -337,8 +335,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                Api_Client api = new Api_Client("" + bithumb_access,
-                        "" + bithumb_secret);
+                Api_Client api = new Api_Client(""+bithumb_access,
+                        ""+bithumb_secret);
                 HashMap<String, String> rgParams = new HashMap<String, String>();
                 rgParams.put("currency", "ALL");
                 String[] coin_type = {"BTC", "ETH", "XRP", "ADA", "DOT"};

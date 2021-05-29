@@ -26,29 +26,18 @@ public class APIActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 final Bundle bundle = new Bundle();
-                if (bithumb_access.getText().toString().length() == 32 ) {
-                    bundle.putString("bit_acc", bithumb_access.getText().toString());
-                }
-                if (bithumb_secret.getText().toString().length() == 32 ) {
-                    bundle.putString("bit_sec", bithumb_secret.getText().toString());
-                }
-
-                if (upbit_access.getText().toString().length() == 40 ) {
-                    bundle.putString("up_acc", upbit_access.getText().toString());
-                }
-
-                if (upbit_secret.getText().toString().length() == 40 ) {
-                    bundle.putString("up_sec", upbit_secret.getText().toString());
-                }
-
-
-
-                if(bithumb_access.getText().toString().length() != 32 || bithumb_secret.getText().toString().length() != 32 ||
+                    if(bithumb_access.getText().toString().length() != 32 || bithumb_secret.getText().toString().length() != 32 ||
                         upbit_access.getText().toString().length() != 40 || upbit_secret.getText().toString().length() != 40 )
                 {
                     setResult(RESULT_CANCELED);
                 }
-                else{setResult(RESULT_OK, intent);}
+                else{
+                        bundle.putString("bit_acc", bithumb_access.getText().toString());
+                        bundle.putString("bit_sec", bithumb_secret.getText().toString());
+                        bundle.putString("up_acc", upbit_access.getText().toString());
+                        bundle.putString("up_sec", upbit_secret.getText().toString());
+                        intent.putExtra("apikey", bundle);
+                        setResult(RESULT_OK, intent);}
                 finish();
             }
         });
