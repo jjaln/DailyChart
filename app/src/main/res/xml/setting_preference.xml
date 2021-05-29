@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="메시지 알림">
+        <SwitchPreference
+            android:key="message"
+            android:defaultValue="true"
+            android:title="메시지 알림 받기"
+            android:summary="변동률이 크게 변화되면 푸시 알림을 받습니다."/>
+    </PreferenceCategory>
+</PreferenceScreen>

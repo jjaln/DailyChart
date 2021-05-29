@@ -1,10 +1,16 @@
 package com.jjaln.dailychart;
 
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.Gravity;
@@ -15,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -33,6 +41,7 @@ import com.google.gson.JsonParser;
 import com.jjaln.dailychart.adapter.CoinListAdapter;
 import com.jjaln.dailychart.adapter.ExchangeAdapter;
 import com.jjaln.dailychart.contents.dashboard.UserDashBoardActivity;
+import com.jjaln.dailychart.contents.setting.Foreground;
 import com.jjaln.dailychart.feature.Coin;
 import com.jjaln.dailychart.feature.Exchange;
 import com.jjaln.dailychart.notification.MyService;
@@ -51,9 +60,13 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import lombok.SneakyThrows;
+
+import static com.jjaln.dailychart.notification.MyService.aLive;
+import static com.jjaln.dailychart.notification.MyService.isforeground;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
     private RoundedImageView rivUser;
     private static final String TAG = "MainActivity";
     private  Intent serviceIntent;
+    public static boolean isBackground;
     String bithumb_access;
     String bithumb_secret;
     String upbit_access;
@@ -82,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
     Handler handler = new Handler();
     DecimalFormat form = new DecimalFormat("#.####");
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("/////////", "oncreate start");
@@ -147,7 +162,9 @@ public class MainActivity extends AppCompatActivity {
             pmintent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
             pmintent.setData(Uri.parse("package:" + getApplicationContext().getPackageName()));
             startActivity(pmintent);
-        }
+        }*/
+
+        aLive = true;
 
         // 앱이 다시 실행되었을 때 충돌 방지
         if (MyService.serviceIntent == null) {
@@ -158,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         }else{
             serviceIntent = MyService.serviceIntent;//getInstance().getApplication();
             //Toast.makeText(getApplicationContext(), "already", Toast.LENGTH_LONG).show();
-        }*/
+        }
 
     }
 
@@ -166,6 +183,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+//        isforeground = true;
         // 앱 종료시 서비스(MyService) 종료(stopService)
         if (serviceIntent!=null) {
             stopService(serviceIntent);
@@ -192,12 +211,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        aLive = true;
         coinManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
         rvCoin.setLayoutManager(coinManager);
         pref = getSharedPreferences("pref", MODE_PRIVATE);
         token = pref.getString("token", "");
         //appbarRight();
         Log.d("/////////", "OnResume End");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+//        isforeground = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+//        isforeground = true;
+    }
+
+    @Override
+    protected void onUserLeaveHint() {
+        super.onUserLeaveHint();
+//        isforeground = true;
     }
 
     private void appbarRight() {
@@ -374,4 +412,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
 }
+

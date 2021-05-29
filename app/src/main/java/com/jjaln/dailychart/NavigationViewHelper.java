@@ -19,6 +19,7 @@ import com.jjaln.dailychart.contents.premium.PremiumActivity;
 import com.jjaln.dailychart.contents.dashboard.UserDashBoardActivity;
 import com.jjaln.dailychart.contents.login.LoginActivity;
 import com.google.android.material.navigation.NavigationView;
+import com.jjaln.dailychart.contents.setting.SettingActivity;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -73,6 +74,12 @@ public class NavigationViewHelper {
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 context.startActivity(intent);
             }
+             else if (id == R.id.setting) {
+                 Log.d(TAG, "enable: setting 클릭");
+                 Intent intent = new Intent(context, SettingActivity.class);
+                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                 context.startActivity(intent);
+             }
             drawer.closeDrawer(Gravity.LEFT);
             return false;
         });
