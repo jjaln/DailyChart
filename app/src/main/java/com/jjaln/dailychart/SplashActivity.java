@@ -14,8 +14,10 @@ import java.util.ArrayList;
 
 public class SplashActivity extends AppCompatActivity {
     private SharedPreferences pref;
-    private String token="";
+    private String token = "";
     private Intent intent;
+    private Intent serviceIntent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,24 +26,34 @@ public class SplashActivity extends AppCompatActivity {
         token = pref.getString("token", "");
         startLoading();
     }
-    private void startLoading()
-    {
+
+    private void startLoading() {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(token.equals(""))
+                if (token.equals(""))
                     intent = new Intent(getApplicationContext(), LoginActivity.class);
                 else
                     intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
             }
-        },1500);
+        }, 1500);
     }
+
     @Override
     protected void onPause() {
         super.onPause();
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (serviceIntent != null) {
+            stopService(serviceIntent);
+            serviceIntent = null;
+        }
     }
 }
