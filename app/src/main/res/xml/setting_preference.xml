@@ -6,5 +6,15 @@
             android:defaultValue="true"
             android:title="메시지 알림 받기"
             android:summary="변동률이 크게 변화되면 푸시 알림을 받습니다."/>
+
+        <ListPreference
+            android:entries="@array/array_rate"
+            android:entryValues="@array/array_rate"
+            android:key="coin_rate"
+            android:summary="10"
+            android:title="변동률 조정"
+            android:dependency="message"/>
+
     </PreferenceCategory>
+
 </PreferenceScreen>

@@ -41,6 +41,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.jjaln.dailychart.contents.setting.SettingPreference.coin_rate;
 import static com.jjaln.dailychart.contents.setting.SettingPreference.isMessage;
 
 public class MyService extends Service {
@@ -52,6 +53,7 @@ public class MyService extends Service {
     int sleepTime = 1;
     private ArrayList CoinData;
     private boolean isDelay;
+    double Coin_rate = 10;
 
     private boolean ismessage = true;
     public static boolean isforeground = true;
@@ -132,7 +134,7 @@ public class MyService extends Service {
                             ismessage = isMessage;
                             Log.d("test", " isMessage " + ismessage);
                         }
-                        Thread.sleep(100 * 60 * sleepTime); // 1 minute
+                        Thread.sleep(1000 * 60 * sleepTime); // 1 minute
                         Date date = new Date();
                         //showToast(getApplication(), sdf.format(date));
                         if (ismessage && isforeground) {
@@ -212,8 +214,13 @@ public class MyService extends Service {
         Log.d("rate", " fluctate_rate_24H " + CoinData);
 
         // 변동률
-        double rate = 0;
-
+        if(aLive){
+            Coin_rate = coin_rate;
+        }
+        double rate = Coin_rate;
+//        Log.d("rate", " Coin_rate " + Coin_rate);
+//        Log.d("rate", " coin_rate " + coin_rate);
+        Log.d("rate", " rate " + rate);
 
         isDelay = false;
         for (int i = 0; i < 5; i++) {
@@ -232,7 +239,7 @@ public class MyService extends Service {
         if (isDelay) {
             Notifi_M = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             send_Noti(arrCoin);
-            sleepTime = 1;
+            sleepTime = 60;
         }
         // 변동률 없으면 pass + 딜레이 1분
         else {

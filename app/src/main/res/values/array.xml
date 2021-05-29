@@ -4,4 +4,12 @@
         <item>한국어</item>
         <item>영어</item>
     </string-array>
+
+    <string-array name="array_rate">
+        <item>3</item>
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+    </string-array>
+
 </resources>
