@@ -44,7 +44,7 @@ public class APIActivity extends AppCompatActivity {
 
 
                 if(bithumb_access.getText().toString().length() != 32 || bithumb_secret.getText().toString().length() != 32 ||
-                        upbit_access.getText().toString().length() != 32 || upbit_secret.getText().toString().length() != 32 )
+                        upbit_access.getText().toString().length() != 40 || upbit_secret.getText().toString().length() != 40 )
                 {
                     setResult(RESULT_CANCELED);
                 }
