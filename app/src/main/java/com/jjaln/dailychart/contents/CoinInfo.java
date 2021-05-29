@@ -34,6 +34,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +48,7 @@ public class CoinInfo extends AppCompatActivity {
     private ImageView ivBack;
     private Context context;
     private FirebaseFirestore database;
-    private String coin_name;
+    private String coin_type, coin_name;
     private int coin_img;
     private Toolbar toolbar;
     List<Integer> price_list = new ArrayList<Integer>();
@@ -55,7 +56,11 @@ public class CoinInfo extends AppCompatActivity {
     DataPoint[] pricePoints;
     LineGraphSeries series;
     int cnt = 30;
-    private TextView current_price, percentage;
+    private TextView current_price, percentage,percentage_price, tv_CoinName, tv_CoinType;
+    private ImageView iv_coinimg;
+    DecimalFormat in = new DecimalFormat("###,###");
+    DecimalFormat dot1 = new DecimalFormat("###.#");
+    DecimalFormat dot2 = new DecimalFormat("###.##");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,20 +75,23 @@ public class CoinInfo extends AppCompatActivity {
         ivBack.setOnClickListener(v -> {
             finish();
         });
-        graph.getGridLabelRenderer().setGridStyle( GridLabelRenderer.GridStyle.NONE );
+        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
         graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
         graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
         Intent intent = getIntent();
-        coin_name = intent.getExtras().getString("coin_name");
+        coin_name = intent.getExtras().getString("coin_type");
+        coin_type = intent.getExtras().getString("coin_type");
         coin_img = intent.getExtras().getInt("coin_img");
-        RoundedImageView imageView = (RoundedImageView)findViewById(R.id.riv_coin);
+        RoundedImageView imageView = (RoundedImageView) findViewById(R.id.riv_coin);
         TextView textView = findViewById(R.id.tv_coininfo);
 
-        layoutManager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
+        layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         mRecyclerView = findViewById(R.id.rv_news);
 
-        imageView.setImageResource(coin_img);
-        textView.setText(coin_name);
+        imageView.setImageResource(coin_img);textView.setText(coin_type);
+        tv_CoinName = findViewById(R.id.coin_name);
+        tv_CoinType = findViewById(R.id.coin_type);
+        iv_coinimg = findViewById(R.id.coin_image);
 
         getNews();
     }
@@ -91,7 +99,7 @@ public class CoinInfo extends AppCompatActivity {
     private void getNews() {
         FirebaseFirestore db = database.getInstance();
 
-        CollectionReference Ref = db.collection(coin_name);
+        CollectionReference Ref = db.collection(coin_type);
         Ref.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -101,15 +109,14 @@ public class CoinInfo extends AppCompatActivity {
                     String title = data.get("title").toString();
                     String url = data.get("link").toString();
                     String desc = data.get("desc").toString();
-                    News cData = new News(title,desc,url);
+                    News cData = new News(title, desc, url);
                     newsListData.add(cData);
-                    mNewsAdapter = new NewsListAdapter(newsListData,context);
+                    mNewsAdapter = new NewsListAdapter(newsListData, context);
                 }
                 mRecyclerView.setAdapter(mNewsAdapter);
                 mRecyclerView.setLayoutManager(layoutManager);
             }
         });
-
         NetworkThread thread = new NetworkThread();
         thread.start();
     }
@@ -135,6 +142,23 @@ public class CoinInfo extends AppCompatActivity {
         series.setDrawBackground(true);
     }
 
+    public String getFormat(String price) {
+        String pm = "";
+        if (price.charAt(0) == '-') {
+            pm = "- ";
+            price = price.substring(1);
+        }
+        Float temp_price = Float.valueOf(price);
+        String res;
+        if (temp_price >= 100)
+            res = in.format(temp_price);
+        else if (temp_price < 100 && temp_price >= 10)
+            res = dot1.format(temp_price);
+        else
+            res = dot2.format(temp_price);
+        return pm + res;
+    }
+
     public void addEntry(int x) {
         series.appendData(new DataPoint(cnt++, x), true, 10);
     }
@@ -148,14 +172,14 @@ public class CoinInfo extends AppCompatActivity {
             rgParams = new HashMap<String, String>();
             int isFirst = 1;
             Intent intent = getIntent();
-            final String coin_name = intent.getExtras().getString("coin_name");
+            final String search_coin = intent.getExtras().getString("coin_type");
             while (true) {
                 if (isFirst == 1) {
                     try {
                         rgParams.put("count", "30");
 
                         //bithumb 거래소 거래 체결 완료 내역 요청하기
-                        String result = api.callApi("/public/transaction_history/" + coin_name + "/KRW", rgParams);
+                        String result = api.callApi("/public/transaction_history/" + search_coin + "/KRW", rgParams);
                         JSONObject obj = new JSONObject(result);
                         String status = obj.getString("status");
                         JSONArray data_list = obj.getJSONArray("data");
@@ -189,19 +213,39 @@ public class CoinInfo extends AppCompatActivity {
                                     addEntry(price);
                                 }
                             });
-                            final String res2 = api.callApi("/public/ticker/" + coin_name + "/KRW", rgParams);
+                            final String res2 = api.callApi("/public/ticker/" + search_coin + "/KRW", rgParams);
                             JSONObject object2 = new JSONObject(res2);
                             JSONObject dt_list = object2.getJSONObject("data");
                             String closing_price = dt_list.getString("closing_price");
                             String fluctate_24H = dt_list.getString("fluctate_24H");
                             String fluctate_rate_24H = dt_list.getString("fluctate_rate_24H");
-                            current_price = (TextView) findViewById(R.id.price);
-                            percentage = (TextView) findViewById(R.id.percentage);
+                            current_price = (TextView) findViewById(R.id.market_price);
+                            percentage = (TextView) findViewById(R.id.fluctate_rate);
+                            percentage_price = (TextView) findViewById(R.id.fluctate_price);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                current_price.setText(closing_price);
-                                percentage.setText("("+fluctate_rate_24H+")%"+fluctate_24H);
+                                    tv_CoinName.setText(coin_name);
+                                    tv_CoinType.setText(coin_type);
+                                    iv_coinimg.setImageResource(coin_img);
+                                    current_price.setText(getFormat(closing_price));
+                                    percentage.setText(getFormat(fluctate_rate_24H));
+                                    percentage_price.setText(getFormat(fluctate_24H));
+                                    if (fluctate_24H.charAt(0) == '-') {
+                                        current_price.setTextColor(Color.BLUE);
+                                        percentage_price.setTextColor(Color.BLUE);
+                                        percentage.setTextColor(Color.BLUE);
+                                    } else {
+                                        if (Float.valueOf(fluctate_24H) > 0) {
+                                            current_price.setTextColor(Color.RED);
+                                            percentage_price.setTextColor(Color.RED);
+                                            percentage.setTextColor(Color.RED);
+                                        } else {
+                                            current_price.setTextColor(Color.BLACK);
+                                            percentage_price.setTextColor(Color.BLACK);
+                                            percentage.setTextColor(Color.BLACK);
+                                        }
+                                    }
                                 }
                             });
                             sleep(1000);

@@ -83,7 +83,8 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.Coin_L
                 int pos = getAdapterPosition();
                 Intent intent = new Intent(mContext, CoinInfo.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                intent.putExtra("coin_name", Coin_List.get(pos).getCoin_type());
+                intent.putExtra("coin_name", Coin_List.get(pos).getCoin_name());
+                intent.putExtra("coin_type", Coin_List.get(pos).getCoin_type());
                 intent.putExtra("coin_img",Coin_List.get(pos).getCoin_img());
                 mContext.startActivity(intent);
             });
@@ -97,12 +98,12 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.Coin_L
             tvFlucRate.setText(getFormat(coins.getFlucate_rate()));
             rivCoinImage.setImageResource(coins.getCoin_img());
 
-            if (coins.getFlucate_rate().charAt(0) == '-') {
+            if (coins.getFlucate_price().charAt(0) == '-') {
                 tvCoinPrice.setTextColor(Color.BLUE);
                 tvFlucPrice.setTextColor(Color.BLUE);
                 tvFlucRate.setTextColor(Color.BLUE);
             } else {
-                if (Float.valueOf(coins.getFlucate_rate()) > 0) {
+                if (Float.parseFloat(coins.getFlucate_price()) > 0) {
                     tvCoinPrice.setTextColor(Color.RED);
                     tvFlucPrice.setTextColor(Color.RED);
                     tvFlucRate.setTextColor(Color.RED);
