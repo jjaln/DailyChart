@@ -23,10 +23,20 @@ import androidx.core.app.NotificationCompat;
 import com.jjaln.dailychart.MainActivity;
 import com.jjaln.dailychart.R;
 import com.jjaln.dailychart.SplashActivity;
+import com.jjaln.dailychart.feature.Coin;
+import com.jjaln.dailychart.wallet.Api_Client;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 public class MyService extends Service {
 
@@ -34,8 +44,13 @@ public class MyService extends Service {
     ServiceThread thread;
     Notification Notifi ;
 
-    private Thread mainThread;
+    int sleepTime = 1;
+    private ArrayList CoinData;
+    private Boolean isDelay;
+
+    public static Boolean isforeground = null;
     public static Intent serviceIntent = null;
+    private Thread mainThread;
 
     public MyService() {
     }
@@ -80,6 +95,12 @@ public class MyService extends Service {
             mainThread = null;
         }
     }
+
+    public void onDestroy(Boolean trig) {
+        super.onDestroy();
+//        thread.stopForever();
+//        thread = null;//쓰레기 값을 만들어서 빠르게 회수하라고 null을 넣어줌
+    }
     // 백그라운드에서 실행되는 동작들이 들어가는 곳
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -87,8 +108,8 @@ public class MyService extends Service {
 
 
         serviceIntent = intent;
-        Log.d("foreground","start service");
 
+        Log.d("foreground","start service");
         mainThread = new Thread(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -97,7 +118,8 @@ public class MyService extends Service {
                 boolean run = true;
                 while (run) {
                     try {
-                        Thread.sleep(1000 * 60 * 1); // 1 minute
+                        Log.d("step","go sleep " + sleepTime);
+                        Thread.sleep(1000 * 60 * sleepTime); // 1 minute
                         Date date = new Date();
                         //showToast(getApplication(), sdf.format(date));
                         sendNotification(sdf.format(date));
@@ -124,52 +146,106 @@ public class MyService extends Service {
         mAlarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), sender);
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, SplashActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT);
-
-        Log.d("Notification", "fore ground noti send");
-        String channelId = "fcm_default_channel";//getString(R.string.default_notification_channel_id);
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.logo_main)//drawable.splash)
-                        .setContentTitle("Daily Chart")
-                        .setContentText("포어 그라운드 실행중")
-                        .setAutoCancel(true)
-                        .setPriority(Notification.PRIORITY_HIGH)
-                        .setContentIntent(pendingIntent);
-
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    private void sendNotification(String messageBody) throws JSONException {
+//        Intent intent = new Intent(this, SplashActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT);
+//
+//        Log.d("Notification", "fore ground noti send");
+//        String channelId = "fcm_default_channel";//getString(R.string.default_notification_channel_id);
+//        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//        NotificationCompat.Builder notificationBuilder =
+//                new NotificationCompat.Builder(this, channelId)
+//                        .setSmallIcon(R.drawable.logo_main)//drawable.splash)
+//                        .setContentTitle("Daily Chart")
+//                        .setContentText("포어 그라운드 실행중")
+//                        .setAutoCancel(true)
+//                        .setPriority(Notification.PRIORITY_HIGH)
+//                        .setContentIntent(pendingIntent);
+//
+//        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Since android Oreo notification channel is needed.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId,"Channel human readable title", NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager.createNotificationChannel(channel);
-        }
-
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            NotificationChannel channel = new NotificationChannel(channelId,"Channel human readable title", NotificationManager.IMPORTANCE_DEFAULT);
+//            notificationManager.createNotificationChannel(channel);
+//        }
+//
+//        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
 
         // 알람
-        Notifi_M = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        fluctateNoti();
+        if(isforeground == true) {
+            ArrayList<String> arrCoin = new ArrayList();
+
+            String[] coin_type = {"BTC", "ETH", "XRP", "ADA", "DOT"};
+            Api_Client api = new Api_Client("a10c1f984334fb14c30ebaf3e60ce998",
+                    "32fe2aae6de50ec84b0ed4cf6093a95b");
+            HashMap<String, String> rgParams = new HashMap<String, String>();
+            rgParams.put("currency", "ALL");
+            ArrayList<String> coins = new ArrayList<>(Arrays.asList(coin_type));
+            CoinData = new ArrayList<>();
+
+            // 코인 변동률 가져오기
+            for (String type : coin_type) {
+                final String res = api.callApi("/public/ticker/" + type + "/KRW", rgParams);
+                JSONObject object = new JSONObject(res);
+                JSONObject dt_list = object.getJSONObject("data");
+                String fluctate_rate_24H = dt_list.getString("fluctate_rate_24H");
+                float f_rate_24H = Float.parseFloat(fluctate_rate_24H);
+                CoinData.add(f_rate_24H);
+            }
+            Log.d("rate",  " fluctate_rate_24H " +  CoinData);
+
+            // 변동률
+            double rate = 10;
+
+            isDelay = false;
+            for (int i = 0; i < 5; i++){
+//                Log.d("test",  " i =  " +  i);
+                float num = (float)CoinData.get(i);
+                float abs;
+                abs = Math.abs(num);
+                if(abs > rate){
+                    isDelay = true;
+                    arrCoin.add(coin_type[i]);
+                }
+            }
+//            Log.d("test1",  "noti? " + isDelay);
+//            Log.d("test1",  "what? " + arrCoin);
+            // 변동률 체크후 변동 있으면 알람 + 딜레이 1시간
+            if(isDelay) {
+                Notifi_M = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                send_Noti(arrCoin);
+                sleepTime = 60;
+            }
+            // 변동률 없으면 pass + 딜레이 1분
+            else{
+                sleepTime = 1;
+            }
+        }
 //        myServiceHandler handler = new myServiceHandler();
 //        thread = new ServiceThread(handler);
 //        thread.start();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void fluctateNoti(){
+    private void send_Noti(ArrayList arr){
         Intent intent = new Intent(MyService.this, SplashActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(MyService.this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
         Log.d("Notification","noti send");
 
+        String ContentTitle = "";
+        String ContentText = "";
+
+        for(Object coin: arr){
+            ContentTitle = ContentTitle + (String)coin ;
+        }
+
         Notifi = new Notification.Builder(getApplicationContext(),"alarm_channel_id")
-                .setContentTitle("Content Title")
-                .setContentText("Content Text")
+                .setContentTitle(ContentTitle)
+                .setContentText("급변동 감지")
                 .setSmallIcon(R.drawable.logo_main)
-                .setTicker("알림!!!")
+                .setTicker("코인 급 변동!!!")
                 .setContentIntent(pendingIntent)
                 .build();
 
