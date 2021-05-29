@@ -1,16 +1,22 @@
 package com.jjaln.dailychart.contents.community;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.esafirm.imagepicker.features.ImagePicker;
+import com.esafirm.imagepicker.model.Image;
 import com.jjaln.dailychart.R;
 import com.jjaln.dailychart.feature.Category;
 import com.jjaln.dailychart.feature.Question;
@@ -34,11 +40,41 @@ public class CommunityWriteActivity extends AppCompatActivity {
     private TextInputEditText etContents;
     private DatabaseReference mDatabase;
 
+    private RichWysiwyg wysiwyg;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         setContentView(R.layout.activity_community_write);
+
+        wysiwyg = findViewById(R.id.richwysiwygeditor);
+
+        wysiwyg.getContent()
+                .setEditorFontSize(18)
+                .setEditorPadding(4, 0, 4, 0);
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, final int resultCode, Intent data) {
+        if (ImagePicker.shouldHandle(requestCode, resultCode, data)) {
+            List<Image> images = ImagePicker.getImages(data);
+            insertImages(images);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void insertImages(List<Image> images) {
+        if (images == null) return;
+
+        StringBuilder stringBuffer = new StringBuilder();
+        for (int i = 0, l = images.size(); i < l; i++) {
+            stringBuffer.append(images.get(i).getPath()).append("\n");
+            // Handle this
+            wysiwyg.getContent().insertImage("file://" + images.get(i).getPath(), "alt");
+        }
     }
 
     @SuppressLint("NewApi")
@@ -75,7 +111,7 @@ public class CommunityWriteActivity extends AppCompatActivity {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     Question question = new Question();
                     question.setTitle(etTitle.getText().toString());
-                    question.setContent(etContents.getText().toString());
+                    question.setContent(wysiwyg.getContent().getHtml());
                     question.setToken(token);
                     question.setCategoryName(autoCompleteTextView.getText().toString());
                     question.setCategoryId(category.indexOf(question.getCategoryName()));

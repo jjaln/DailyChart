@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jjaln.dailychart.R;
 import com.jjaln.dailychart.contents.community.CommunityContentsActivity;
+import com.jjaln.dailychart.contents.community.RichEditor.RichEditor;
 import com.jjaln.dailychart.feature.Community_Data;
 import com.jjaln.dailychart.feature.Contents;
 import com.jjaln.dailychart.feature.Reply;
@@ -94,7 +96,8 @@ public class CommunityContentAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public class DetailContentViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvDetailTitle, tvDetailUsername, tvDetailCategory, tvDetailDate, tvDetailContents;
+        private TextView tvDetailTitle, tvDetailUsername, tvDetailCategory, tvDetailDate;
+        private RichEditor tvDetailContents;
 
         public DetailContentViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -103,12 +106,12 @@ public class CommunityContentAdapter extends RecyclerView.Adapter<RecyclerView.V
             tvDetailCategory = itemView.findViewById(R.id.tv_detail_category);
             tvDetailDate = itemView.findViewById(R.id.tv_detail_date);
             tvDetailContents = itemView.findViewById(R.id.tv_detail_content);
-
+            tvDetailContents.setLayerType(View.LAYER_TYPE_HARDWARE, null); // sdk 19 이상은 ChromeWebView를 사용해서 ChromeWebView로 설정
         }
 
         public void setItem(Community_Data community) {
             tvDetailTitle.setText(community.getTitle());
-            tvDetailContents.setText(community.getContent());
+            tvDetailContents.setHtml(community.getContent());
             tvDetailUsername.setText(community.getUsername());
             tvDetailCategory.setText(community.getCategoryName());
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy/MM/dd HH:mm", Locale.KOREA);

@@ -193,24 +193,24 @@ public class RichWysiwyg extends LinearLayout {
             }
         });
 
-        // 취소 버튼
-        cancelButton = findViewById(R.id.write_cancelButton);
-        cancelButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                closePopupWindow();
-            }
-        });
-
-        // 등록 버튼
-        confirmButton = findViewById(R.id.write_confirmButton);
-        confirmButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                closePopupWindow();
-                // 백엔드
-            }
-        });
+//        // 취소 버튼
+//        cancelButton = findViewById(R.id.write_cancelButton);
+//        cancelButton.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                closePopupWindow();
+//            }
+//        });
+//
+//        // 등록 버튼
+//        confirmButton = findViewById(R.id.write_confirmButton);
+//        confirmButton.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                closePopupWindow();
+//                // 백엔드
+//            }
+//        });
 
         // Text Size 버튼
         ImageButton textSizeButton = findViewById(R.id.write_textSize);

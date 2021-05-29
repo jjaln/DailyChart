@@ -13,6 +13,7 @@ import android.view.Gravity;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.jjaln.dailychart.contents.community.WysiwygUtils.Youtube;
 
@@ -262,7 +263,7 @@ public class RichEditor extends WebView {
     try {
       exec("javascript:RE.setHtml('" + URLEncoder.encode(contents, "UTF-8") + "');");
     } catch (UnsupportedEncodingException e) {
-      // No handling
+      Toast.makeText(getContext(), "Richeditor setHtml error", Toast.LENGTH_SHORT).show();
     }
     mContents = contents;
   }
