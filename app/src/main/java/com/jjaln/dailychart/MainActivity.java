@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         rvCoin = findViewById(R.id.rv_CoinList);
         Log.d("/////////", "oncreate End");
         thread = new NetworkThread();
-        thread.start();
+        //thread.start();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
