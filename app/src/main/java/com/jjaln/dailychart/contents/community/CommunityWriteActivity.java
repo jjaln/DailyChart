@@ -37,7 +37,6 @@ public class CommunityWriteActivity extends AppCompatActivity {
     public List<String> category;
     private List<Category> categories;
     private TextInputEditText etTitle;
-    private TextInputEditText etContents;
     private DatabaseReference mDatabase;
 
     private RichWysiwyg wysiwyg;
@@ -90,7 +89,6 @@ public class CommunityWriteActivity extends AppCompatActivity {
         autoCompleteTextView = findViewById(R.id.autoCompleteText);
         btnSaveCommunity = findViewById(R.id.btn_save_community);
         etTitle = findViewById(R.id.et_title);
-        etContents = findViewById(R.id.et_content);
         category = CommunityActivity.category;
         categories = new ArrayList<>();
 
@@ -104,8 +102,8 @@ public class CommunityWriteActivity extends AppCompatActivity {
             String token = pref.getString("token", "");
             String username = pref.getString("username","");
             String flag = autoCompleteTextView.getText().toString();
-            if (etTitle.getText().toString().equals("") | etContents.getText().toString().equals(""))
-                Toast.makeText(this, "Check your Input", Toast.LENGTH_SHORT).show();
+            if (etTitle.getText().toString().equals("") | wysiwyg.getContent().toString().equals(""))
+                Toast.makeText(this, "내용을 작성해 주세요.", Toast.LENGTH_SHORT).show();
             else {
                 if (category.indexOf(flag) != -1) {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

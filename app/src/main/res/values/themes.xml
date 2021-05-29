@@ -19,6 +19,7 @@
         <item name="textColor_2">#ff222222</item>
         <item name="textColor_3">#ff666666</item>
 
+        <item name="cardview">#ffffffff</item>
 
         <item name="navHeaderBackground">#EDEDED</item>
     </style>

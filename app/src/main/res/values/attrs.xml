@@ -4,4 +4,5 @@
     <attr name="textColor_2" format="color" />
     <attr name="textColor_3" format="color" />
     <attr name="navHeaderBackground" format="color" />
+    <attr name="cardview" format="color"/>
 </resources>
