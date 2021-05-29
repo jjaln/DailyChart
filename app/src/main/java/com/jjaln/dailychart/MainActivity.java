@@ -57,8 +57,6 @@ import java.util.UUID;
 
 import lombok.SneakyThrows;
 
-import static com.jjaln.dailychart.notification.MyService.isforeground;
-
 public class MainActivity extends AppCompatActivity {
 
     private Context mContext = MainActivity.this;
@@ -152,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
             pmintent.setData(Uri.parse("package:" + getApplicationContext().getPackageName()));
             startActivity(pmintent);
         }
-        isforeground = false;
+
         // 앱이 다시 실행되었을 때 충돌 방지
         if (MyService.serviceIntent == null) {
             // 백그라운드 쓰레드 실행
@@ -170,10 +168,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        Log.d("**", "destroyed");
-        isforeground = true;
-
         // 앱 종료시 서비스(MyService) 종료(stopService)
         if (serviceIntent!=null) {
             stopService(serviceIntent);
@@ -199,8 +193,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("**", "resume");
-        isforeground = false;
         coinManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
         rvCoin.setLayoutManager(coinManager);
         pref = getSharedPreferences("pref", MODE_PRIVATE);
@@ -382,24 +374,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    @Override
-    protected void onStop() {
-//        Log.d("**", "stop");
-        super.onStop();
-    }
-
-    @Override
-    protected void onPause() {
-//        Log.d("**", "pause");
-        super.onPause();
-    }
-
-    @Override
-    protected void onUserLeaveHint() {
-        Log.d("**", "homeButton");
-        isforeground = true;
-        super.onUserLeaveHint();
     }
 }
