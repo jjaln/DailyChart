@@ -3,10 +3,8 @@ package com.jjaln.dailychart;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PowerManager;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.Gravity;
@@ -139,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // 절전모드 해제 권한
-        PowerManager pm = (PowerManager) getApplicationContext().getSystemService(POWER_SERVICE);
+        /*PowerManager pm = (PowerManager) getApplicationContext().getSystemService(POWER_SERVICE);
         boolean isWhiteListing = false;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             isWhiteListing = pm.isIgnoringBatteryOptimizations(getApplicationContext().getPackageName());
@@ -160,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
         }else{
             serviceIntent = MyService.serviceIntent;//getInstance().getApplication();
             //Toast.makeText(getApplicationContext(), "already", Toast.LENGTH_LONG).show();
-        }
+        }*/
 
     }
 
@@ -173,16 +171,21 @@ public class MainActivity extends AppCompatActivity {
             stopService(serviceIntent);
             serviceIntent = null;
         }
+
+        Intent service_intent = new Intent(MainActivity.this, MyService.class);
+        stopService(service_intent);
+        startService(service_intent);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        Bundle bundle = data.getBundleExtra("apikey");
-        bithumb_access = bundle.getString("bit_acc");
-        bithumb_secret = bundle.getString("bit_sec");
-        upbit_access = bundle.getString("up_acc");
-        upbit_secret = bundle.getString("up_sec");
+        if(resultCode != RESULT_CANCELED) {
+            Bundle bundle = data.getBundleExtra("apikey");
+            bithumb_access = bundle.getString("bit_acc");
+            bithumb_secret = bundle.getString("bit_sec");
+            upbit_access = bundle.getString("up_acc");
+            upbit_secret = bundle.getString("up_sec");
+        }
     }
 
 
@@ -235,9 +238,10 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             while (true) {
 
+
                 if (bithumb_access != null && bithumb_secret != null) {
-                    Api_Client api = new Api_Client("" + "a10c1f984334fb14c30ebaf3e60ce998",
-                            "" + "32fe2aae6de50ec84b0ed4cf6093a95b"
+                    Api_Client api = new Api_Client(""+bithumb_access,
+                            ""+bithumb_secret
                     );
                     HashMap<String, String> rgParams = new HashMap<String, String>();
                     rgParams.put("currency", "ALL");
@@ -280,6 +284,7 @@ public class MainActivity extends AppCompatActivity {
                             (Float.parseFloat(xcoin_last_xrp) * Float.parseFloat(total_xrp)) +
                             (Float.parseFloat(xcoin_last_ada) * Float.parseFloat(total_ada)) +
                             (Float.parseFloat(xcoin_last_dot) * Float.parseFloat(total_dot));
+                    System.out.println(balance);
                     String Asset = "Bithumb : " + form.format(balance);
                     runOnUiThread(new Runnable() {
                         @Override
