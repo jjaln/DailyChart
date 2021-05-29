@@ -179,6 +179,10 @@ public class MainActivity extends AppCompatActivity {
             stopService(serviceIntent);
             serviceIntent = null;
         }
+
+        Intent service_intent = new Intent(MainActivity.this, MyService.class);
+        stopService(service_intent);
+        startService(service_intent);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

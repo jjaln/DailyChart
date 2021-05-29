@@ -42,12 +42,10 @@
 
         <service
             android:name=".notification.MyService"
-            android:stopWithTask="false"
             android:enabled="true"
-            android:exported="true"></service>
-        <service
-            android:name=".notification.ForecdTerminationService"
-            android:stopWithTask="false" />
+            android:stopWithTask="false"
+            android:exported="true"
+            ></service>
         <service
             android:name=".notification.RestartService"
             android:enabled="true"

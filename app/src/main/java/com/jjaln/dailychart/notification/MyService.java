@@ -48,7 +48,7 @@ public class MyService extends Service {
     private ArrayList CoinData;
     private Boolean isDelay;
 
-    public static Boolean isforeground = null;
+    public static Boolean isforeground = true;
     public static Intent serviceIntent = null;
     private Thread mainThread;
 
@@ -85,7 +85,7 @@ public class MyService extends Service {
 //        thread = null;//쓰레기 값을 만들어서 빠르게 회수하라고 null을 넣어줌
 
         Log.d("Lifecycle","excute onDestroy");
-
+        sleepTime = 1;
         serviceIntent = null;
         setAlarmTimer();
         Thread.currentThread().interrupt();
@@ -98,13 +98,10 @@ public class MyService extends Service {
 
     public void onDestroy(Boolean trig) {
         super.onDestroy();
-//        thread.stopForever();
-//        thread = null;//쓰레기 값을 만들어서 빠르게 회수하라고 null을 넣어줌
     }
     // 백그라운드에서 실행되는 동작들이 들어가는 곳
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-//        return START_STICKY;
 
 
         serviceIntent = intent;
@@ -132,7 +129,7 @@ public class MyService extends Service {
         });
         mainThread.start();
 
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     protected void setAlarmTimer() {
@@ -223,9 +220,6 @@ public class MyService extends Service {
                 sleepTime = 1;
             }
         }
-//        myServiceHandler handler = new myServiceHandler();
-//        thread = new ServiceThread(handler);
-//        thread.start();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -238,7 +232,7 @@ public class MyService extends Service {
         String ContentText = "";
 
         for(Object coin: arr){
-            ContentTitle = ContentTitle + (String)coin ;
+            ContentTitle = ContentTitle + (String)coin +" ";
         }
 
         Notifi = new Notification.Builder(getApplicationContext(),"alarm_channel_id")
@@ -269,45 +263,12 @@ public class MyService extends Service {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) { //핸들링 하는 부분
-        Log.d("Error","onTaskRemoved - 강제 종료 " + rootIntent);
-//        Intent intent = new Intent(getApplicationContext(), MyService.class);
-//        PendingIntent pendingIntent = PendingIntent.getService(this, 1, intent, PendingIntent.FLAG_ONE_SHOT);
+        Log.d("Error","onTaskRemoved - 강제 종료  " + rootIntent);
+
         stopSelf(); //서비스 종료
-//        super.onTaskRemoved(rootIntent);
+
+        Log.d("Error", "onTaskRemoved - end");
     }
 
-//    class myServiceHandler extends Handler {
-//        @RequiresApi(api = Build.VERSION_CODES.O)
-//        @Override
-//        public void handleMessage(android.os.Message msg) {
-//            Intent intent = new Intent(MyService.this, SplashActivity.class);
-//            PendingIntent pendingIntent = PendingIntent.getActivity(MyService.this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
-//            Log.d("Notification","noti send");
-//
-//            Notifi = new Notification.Builder(getApplicationContext(),"alarm_channel_id")
-//                    .setContentTitle("Content Title")
-//                    .setContentText("Content Text")
-//                    .setSmallIcon(R.drawable.logo_main)
-//                    .setTicker("알림!!!")
-//                    .setContentIntent(pendingIntent)
-//                    .build();
-//
-//            //소리추가
-//            Notifi.defaults = Notification.DEFAULT_SOUND;
-//
-//            //알림 소리를 한번만 내도록
-//            Notifi.flags = Notification.FLAG_ONLY_ALERT_ONCE;
-//
-//            //확인하면 자동으로 알림이 제거 되도록
-//            Notifi.flags = Notification.FLAG_AUTO_CANCEL;
-//
-//
-//            Notifi_M.notify( 777 , Notifi);
-//
-//
-//            //토스트 띄우기
-//            //Toast.makeText(MyService.this, "뜸?", Toast.LENGTH_LONG).show();
-//        }
-//    };
 
 }
