@@ -217,7 +217,8 @@ public class MyService extends Service {
         if(aLive){
             Coin_rate = coin_rate;
         }
-        double rate = Coin_rate;
+        double rate = 10;
+        rate = Coin_rate;
 //        Log.d("rate", " Coin_rate " + Coin_rate);
 //        Log.d("rate", " coin_rate " + coin_rate);
         Log.d("rate", " rate " + rate);
