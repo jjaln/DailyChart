@@ -32,6 +32,3 @@ Want to more Info to [Wiki](https://github.com/jjaln/DailyChart/wiki)
 | `GoogleNews` | <https://github.com/Iceloof/GoogleNews> |
 
 ☞ In additional, many used library
-
-## Referenced By
-https://github.com/qwq140/nomad-clone-app
