@@ -1,16 +1,11 @@
 package com.jjaln.dailychart;
 
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PowerManager;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -41,7 +35,6 @@ import com.google.gson.JsonParser;
 import com.jjaln.dailychart.adapter.CoinListAdapter;
 import com.jjaln.dailychart.adapter.ExchangeAdapter;
 import com.jjaln.dailychart.contents.dashboard.UserDashBoardActivity;
-import com.jjaln.dailychart.contents.setting.Foreground;
 import com.jjaln.dailychart.feature.Coin;
 import com.jjaln.dailychart.feature.Exchange;
 import com.jjaln.dailychart.notification.MyService;
@@ -60,13 +53,11 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 import lombok.SneakyThrows;
 
 import static com.jjaln.dailychart.notification.MyService.aLive;
-import static com.jjaln.dailychart.notification.MyService.isforeground;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -283,31 +274,19 @@ public class MainActivity extends AppCompatActivity {
                     rgParams.put("currency", "ALL");
 
                     double balance = 0.0;
-                    // API 를 이용하여 info-balance 의 결과값을 JSON 타입으로 가져오기
+
                     final String result = api.callApi("/info/balance", rgParams);
-                    // JSONObject 객체에 담는다.
+
                     JSONObject obj = new JSONObject(result);
                     String status = obj.getString("status");
-                    // 'data' 객체는 Object
+
                     JSONObject data_list = obj.getJSONObject("data");
                     String total_krw = data_list.getString("total_krw");
-                    String in_use_krw = data_list.getString("in_use_krw");
-                    String available_krw = data_list.getString("available_krw");
                     String total_btc = data_list.getString("total_btc");
-                    String in_use_btc = data_list.getString("in_use_btc");
-                    String available_btc = data_list.getString("available_btc");
                     String total_eth = data_list.getString("total_eth");
-                    String in_use_eth = data_list.getString("in_use_eth");
-                    String available_eth = data_list.getString("available_eth");
                     String total_xrp = data_list.getString("total_xrp");
-                    String in_use_xrp = data_list.getString("in_use_xrp");
-                    String available_xrp = data_list.getString("available_xrp");
                     String total_dot = data_list.getString("total_dot");
-                    String in_use_dot = data_list.getString("in_use_dot");
-                    String available_dot = data_list.getString("available_dot");
                     String total_ada = data_list.getString("total_ada");
-                    String in_use_ada = data_list.getString("in_use_ada");
-                    String available_ada = data_list.getString("available_ada");
                     String xcoin_last_btc = data_list.getString("xcoin_last_btc");
                     String xcoin_last_eth = data_list.getString("xcoin_last_eth");
                     String xcoin_last_xrp = data_list.getString("xcoin_last_xrp");

@@ -7,8 +7,6 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.jjaln.dailychart.contents.login.LoginActivity;
-
 public class SplashActivity extends AppCompatActivity {
     private SharedPreferences pref;
     private String token = "";
@@ -29,9 +27,7 @@ public class SplashActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (token.equals(""))
-                    intent = new Intent(getApplicationContext(), LoginActivity.class);
-                else
+
                     intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();

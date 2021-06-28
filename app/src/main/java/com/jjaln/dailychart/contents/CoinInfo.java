@@ -129,16 +129,15 @@ public class CoinInfo extends AppCompatActivity {
             pricePoints[i] = new DataPoint(i, price_list.get(i));
         }
         series = new LineGraphSeries<>(pricePoints);
-        // 그래프에 데이터 점들 붙이기
+        // Connect points in graph.
         graph.addSeries(series);
         graph.getViewport().setMinY(price_list.get(0) - price_list.get(0)*0.002);
         graph.getViewport().setMaxY(price_list.get(0) + price_list.get(0)*0.002);
+        //Set extending x and y
         graph.getViewport().setYAxisBoundsManual(true);
-        // x축의 연장 가능성 true
         graph.getViewport().setXAxisBoundsManual(true);
-        // 데이터가 늘어날때 x축의 scroll 이 생기도록 설정
+        //Set scrollable
         graph.getViewport().setScrollable(true);
-        // 데이터가 늘어날때 y축의 scroll 이 생겨지도록 설정
         graph.getViewport().setScrollableY(true);
 
         series.setBackgroundColor(Color.parseColor("#4D87cefa"));
@@ -169,8 +168,8 @@ public class CoinInfo extends AppCompatActivity {
     class NetworkThread extends Thread {
         @Override
         public void run() {
-            Api_Client api = new Api_Client("a10c1f984334fb14c30ebaf3e60ce998",
-                    "32fe2aae6de50ec84b0ed4cf6093a95b");
+            Api_Client api = new Api_Client("dad7400cc3d9591441f0ef433f354542",
+                    "b3de9e9b7ce80d5ed9a72f485178af00");
             HashMap<String, String> rgParams = new HashMap<String, String>();
             rgParams = new HashMap<String, String>();
             int isFirst = 1;

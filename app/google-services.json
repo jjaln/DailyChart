@@ -23,6 +23,38 @@
           }
         },
         {
+          "client_id": "342439727663-ga4ub4vd1tct914o41ioaiuda6agqvej.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jjaln.dailychart",
+            "certificate_hash": "6d655e3d7af6b893eee88cc0472c6c0cad4a69bc"
+          }
+        },
+        {
+          "client_id": "342439727663-k6h4vnlmf75a6dthm5k7cu6knbqo9dcp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jjaln.dailychart",
+            "certificate_hash": "b8c0e7a22b1bc12cba3ea03328de6809a95b3852"
+          }
+        },
+        {
+          "client_id": "342439727663-mu5jmuruf39hesn1ocmns29kmg0h63cb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jjaln.dailychart",
+            "certificate_hash": "8480da0b3d07c1aa1409a4c7be32de6523c8e248"
+          }
+        },
+        {
+          "client_id": "342439727663-pt5fhcam4ehlqftfamdapoa75oq51m98.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jjaln.dailychart",
+            "certificate_hash": "2256a3c42d4a594ea751271c55bb3322742d127a"
+          }
+        },
+        {
           "client_id": "342439727663-2cghjl4v6v5mkg6vmej0qbj68b38huoo.apps.googleusercontent.com",
           "client_type": 3
         }
